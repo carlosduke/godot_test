@@ -1,6 +1,8 @@
 extends Node
 
-export(PackedScene) var mob_scene
+signal shoot
+
+export(PackedScene) var mob_scene 
 var score
 var lifes = 5
 
@@ -31,7 +33,7 @@ func handle_hit():
 
 
 func new_game():
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	get_tree().call_group("mobs", "queue_free")
 	score = 0
 	$Player.start($StartPosition.position)
@@ -74,3 +76,7 @@ func _on_ScoreTimer_timeout():
 func _on_StartTimer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
+
+
+func _on_Main_shoot():
+	print('rola')

@@ -36,7 +36,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 240, 450 )
+position = Vector2( 250, 250 )
 
 [node name="MobPath" type="Path2D" parent="."]
 curve = SubResource( 1 )
@@ -51,6 +51,7 @@ stream = ExtResource( 5 )
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 
+[connection signal="shoot" from="." to="." method="_on_Main_shoot"]
 [connection signal="hit" from="Player" to="." method="handle_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]

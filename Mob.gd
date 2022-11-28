@@ -1,3 +1,4 @@
+class_name Mob
 extends RigidBody2D
 
 func _ready():
@@ -11,4 +12,7 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 	
 func rola():
+	queue_free()
+
+func kill():
 	queue_free()

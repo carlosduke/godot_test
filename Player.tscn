@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://art/playerGrey_walk1.png" type="Texture" id=2]
 [ext_resource path="res://art/playerGrey_walk2.png" type="Texture" id=3]
 [ext_resource path="res://art/playerGrey_up1.png" type="Texture" id=4]
 [ext_resource path="res://art/playerGrey_up2.png" type="Texture" id=5]
+[ext_resource path="res://Bullet.tscn" type="PackedScene" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -52,6 +53,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
+bullet_scene = ExtResource( 6 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
@@ -74,5 +76,11 @@ position = Vector2( -25, -50 )
 points = PoolVector2Array( 0, 0, 50, 0 )
 width = 5.0
 default_color = Color( 1, 0.4, 0.470588, 1 )
+
+[node name="shoot_start" type="Position2D" parent="."]
+
+[node name="shoot_time" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
