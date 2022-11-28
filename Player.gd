@@ -3,14 +3,18 @@ extends Area2D
 signal hit
 
 export(PackedScene) var bullet_scene
+export(int) var default_lifes
 export var speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
 var mouse_pos
 var started = false
+var lifes
+var size_lifes
+
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	print('started')
+	size_lifes = $LifeHud.points[0].distance_to($LifeHud.points[1]) / default_lifes
 	hide()
 
 func _input(event):
@@ -79,6 +83,10 @@ func _process(delta):
 
 func start(pos):
 	position = pos
+	lifes = default_lifes
+	
+	$LifeHud.points[1][0] = size_lifes * lifes
+	
 	show()
 	$CollisionShape2D.disabled = false
 	started = true
@@ -87,11 +95,18 @@ func start(pos):
 
 func _on_Player_body_entered(_body):
 	#_body.rola()
-	emit_signal("hit")
-	$LifeHud.points[1][0] = $LifeHud.points[1][0] - 10
+	if lifes > 0: lifes -= 1
+	else: return
+	
+	#print("cur size: ", size_lifes * lifes)
+	$LifeHud.points[1][0] = size_lifes * lifes
 	_body.kill()
+	
+	emit_signal("hit")
 	
 func destroy():
 	hide()
 	started = false
 	
+func get_lifes():
+	return lifes

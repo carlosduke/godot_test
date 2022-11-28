@@ -1,10 +1,7 @@
 extends Node
 
-signal shoot
-
 export(PackedScene) var mob_scene 
 var score
-var lifes = 5
 
 func _ready():
 	randomize()
@@ -13,14 +10,9 @@ func _ready():
 	$MobPath.get_curve().add_point(Vector2(0,0))
 	
 
-func get_lifes():
-	return lifes
-
 func handle_hit():
-	if lifes > 0: lifes -= 1
-	$HUD.update_lifes(lifes)
-	if lifes == 0:
-		lifes = 5
+	$HUD.update_lifes($Player.get_lifes())
+	if $Player.get_lifes() == 0:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		
 		$ScoreTimer.stop()
@@ -39,7 +31,7 @@ func new_game():
 	$Player.start($StartPosition.position)
 	$StartTimer.start()
 	$HUD.update_score(score)
-	$HUD.update_lifes(lifes)
+	$HUD.update_lifes($Player.get_lifes())
 	$HUD.show_message("Get Ready")
 	#$Music.play()
 
@@ -76,7 +68,3 @@ func _on_ScoreTimer_timeout():
 func _on_StartTimer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
-
-
-func _on_Main_shoot():
-	print('rola')

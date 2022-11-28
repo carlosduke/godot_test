@@ -54,6 +54,8 @@ __meta__ = {
 "_edit_group_": true
 }
 bullet_scene = ExtResource( 6 )
+default_lifes = 10
+speed = 300
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
