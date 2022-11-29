@@ -28,7 +28,9 @@ func new_game():
 	#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	get_tree().call_group("mobs", "queue_free")
 	score = 0
-	$Player.start($StartPosition.position)
+	
+	$Player.start($StartPosition.position, $StartMap.position, $EndMap.position)
+	
 	$StartTimer.start()
 	$HUD.update_score(score)
 	$HUD.update_lifes($Player.get_lifes())

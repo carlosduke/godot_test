@@ -11,10 +11,21 @@ var started = false
 var lifes
 var size_lifes
 
+var startMap
+var endMap
+
 
 func _ready():
 	screen_size = get_viewport_rect().size
 	size_lifes = $LifeHud.points[0].distance_to($LifeHud.points[1]) / default_lifes
+	
+	# Static types are necessary here to avoid warnings.
+	var camera: Camera2D = $Camera
+	
+	camera.custom_viewport = $"../.."
+	yield(get_tree(), "idle_frame")
+	camera.make_current()
+	
 	hide()
 
 func _input(event):
@@ -44,6 +55,8 @@ func shoot(tmp):
 #	print('rola')
 
 func _process(delta):
+	if not started: return
+	
 	var velocity = Vector2.ZERO # The player's movement vector.
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
@@ -69,8 +82,8 @@ func _process(delta):
 
 	#print(position)
 	position += velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x)
-	position.y = clamp(position.y, 0, screen_size.y)
+	position.x = clamp(position.x, startMap.x, endMap.x)
+	position.y = clamp(position.y, startMap.y, endMap.y)
 
 	if velocity.x != 0:
 		$AnimatedSprite.animation = "right"
@@ -81,9 +94,15 @@ func _process(delta):
 		$AnimatedSprite.flip_v = velocity.y > 0
 
 
-func start(pos):
+func start(pos, sm, em):
 	position = pos
 	lifes = default_lifes
+	startMap = sm
+	endMap = em
+	$Camera.limit_left = sm.x
+	$Camera.limit_top = sm.y
+	$Camera.limit_right = em.x
+	$Camera.limit_bottom = em.y
 	
 	$LifeHud.points[1][0] = size_lifes * lifes
 	
