@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Dodge the Creeps"
+config/name="Testes"
 config/description="This is a simple game where your character must move
 and avoid the enemies for as long as possible.
 

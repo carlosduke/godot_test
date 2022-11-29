@@ -30,7 +30,7 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		mouse_pos = event.position
+		mouse_pos = event.global_position
 	if event is InputEventMouseButton and event.is_pressed():
 		var direction = (mouse_pos - position).normalized()
 		shoot(direction)
@@ -42,14 +42,18 @@ func shoot(tmp):
 	if not $shoot_time.is_stopped():
 		return
 	
+	print("player: ", $shoot_start.get_global_transform_with_canvas().get_origin())
+	
+	print("mouse: ", mouse_pos)
 	$shoot_time.start()
 	var bullet = bullet_scene.instance()
 	#bullet.start(get_position())
 	#bullet.position = Vector2(0, 0)
+	
 	bullet.global_position = $shoot_start.global_position
 	bullet.set_as_toplevel(true)
-	var velocity = global_position.direction_to(mouse_pos)
-	bullet.start(velocity)
+	var velocity = $shoot_start.get_global_transform_with_canvas().get_origin().direction_to(mouse_pos)
+	bullet.start(velocity, startMap, endMap)
 	add_child(bullet)
 	
 #	print('rola')
