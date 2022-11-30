@@ -57,7 +57,6 @@ func shoot(tmp):
 	bullet.start(velocity, startMap, endMap)
 	add_child(bullet)
 	
-
 func bomb(position):
 	if not $bomb_time.is_stopped():
 		return
@@ -145,5 +144,6 @@ func _on_Player_body_entered(_body):
 func destroy():
 	hide()
 	started = false	
+
 func get_lifes():
 	return lifes

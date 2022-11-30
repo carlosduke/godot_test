@@ -52,6 +52,18 @@ animation = "walk"
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 
+[node name="LifeHud" type="Line2D" parent="."]
+points = PoolVector2Array( -25, -30, 25, -30 )
+width = 5.0
+default_color = Color( 0.909804, 0.0156863, 0.0156863, 1 )
+
+[node name="Level" type="Label" parent="."]
+margin_left = -24.0
+margin_top = -47.0
+margin_right = 41.0
+margin_bottom = -33.0
+text = "Level: "
+
 [connection signal="body_entered" from="." to="." method="_on_Mob_body_entered"]
 [connection signal="body_shape_entered" from="." to="." method="_on_Mob_body_shape_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
