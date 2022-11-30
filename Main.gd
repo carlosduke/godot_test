@@ -5,7 +5,6 @@ var score
 var target = load("res://art/target.png")
 
 func _ready():
-	print(target)
 	randomize()
 	
 	
