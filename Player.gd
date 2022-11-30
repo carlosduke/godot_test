@@ -58,12 +58,17 @@ func shoot(tmp):
 	add_child(bullet)
 	
 
-func bomb():
-	print('inicio')
+func bomb(position):
+	if not $bomb_time.is_stopped():
+		return
+	$bomb_time.start()
 	var b = bomb_scene.instance()
 	
 	b.set_as_toplevel(true)
-	b.bomb(10, 20)
+	print(position)
+	b.position.x = position[0]
+	b.position.y= position[1]
+	b.bomb(1,1)
 	add_child(b)
 
 func _process(delta):
@@ -86,7 +91,7 @@ func _process(delta):
 	if Input.is_mouse_button_pressed(1):
 		shoot(1)
 	if Input.is_mouse_button_pressed(2):
-		bomb()	
+		bomb(get_global_mouse_position())	
 		
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed

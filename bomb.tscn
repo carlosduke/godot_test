@@ -1,7 +1,10 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://art/bomb.png" type="Texture" id=1]
 [ext_resource path="res://bomb.gd" type="Script" id=2]
+
+[sub_resource type="CircleShape2D" id=27]
+radius = 142.014
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -144,12 +147,20 @@ animations = [ {
 [node name="bomb" type="Area2D"]
 script = ExtResource( 2 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 12, 11 )
+shape = SubResource( 27 )
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 461, 347 )
-scale = Vector2( 2.96394, 2.91486 )
+position = Vector2( 0, 2 )
+scale = Vector2( 1.64137, 1.61419 )
 frames = SubResource( 26 )
+frame = 1
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.245
 one_shot = true
-autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_bomb_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_bomb_body_shape_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

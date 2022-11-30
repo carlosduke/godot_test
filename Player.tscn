@@ -87,6 +87,9 @@ default_color = Color( 1, 0.4, 0.470588, 1 )
 wait_time = 0.2
 one_shot = true
 
+[node name="bomb_time" type="Timer" parent="."]
+one_shot = true
+
 [node name="Camera" type="Camera2D" parent="."]
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
