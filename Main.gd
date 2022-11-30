@@ -54,9 +54,11 @@ func new_game():
 func create_mob():
 	# Create a new instance of the Mob scene.
 	var mob = mob_scene.instance()
-	var speed = rand_range(150.0, 250.0)
+	var speed = rand_range(75.0, 150.0)
 	
-	mob.start($Player, speed)
+	var mob_lifes = score%5
+	if mob_lifes < 2: mob_lifes = 2
+	mob.start($Player, speed, mob_lifes)
 	
 	
 	# Choose a random location on Path2D.
@@ -77,7 +79,7 @@ func create_mob():
 	
 	# Add some randomness to the direction.
 	direction += rand_range(-PI / 4, PI / 4)
-	mob.rotation = direction
+	#mob.rotation = direction
 
 	# Choose the velocity for the mob.
 	#var velocity = Vector2(rand_range(150.0, 250.0), 0.0)
@@ -96,9 +98,9 @@ func _on_ScoreTimer_timeout():
 	$HUD.update_score(score)
 
 func _on_StartTimer_timeout():
-	#$MobTimer.start()
-	#$ScoreTimer.start()
-	pass
+	$MobTimer.start()
+	$ScoreTimer.start()
+	#pass
 
 
 func _on_Pause_resume_game():

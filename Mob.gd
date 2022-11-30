@@ -4,11 +4,23 @@ extends RigidBody2D
 var player
 var speed
 
-func start(p, _speed):
+var default_lifes
+var lifes
+var size_lifes
+
+func start(p, _speed, _default_lifes = 2):
 	player = p
 	speed = _speed
+	default_lifes = _default_lifes
+
 
 func _ready():
+	lifes = default_lifes
+	size_lifes = $LifeHud.points[0].distance_to($LifeHud.points[1]) / default_lifes
+	$LifeHud.points[1][0] = size_lifes * lifes
+	$LifeHud.rotation_degrees = 0
+	$Level.text = "Level: " + str(default_lifes)
+	
 	$AnimatedSprite.playing = true
 	var mob_types = $AnimatedSprite.frames.get_animation_names()
 	$AnimatedSprite.animation = mob_types[randi() % mob_types.size()]
@@ -29,4 +41,8 @@ func _on_VisibilityNotifier2D_screen_exited():
 	pass
 
 func kill():
-	queue_free()
+	if lifes > 0: lifes = lifes -1
+	$LifeHud.points[1][0] = size_lifes * lifes
+	
+	if lifes == 0:
+		queue_free()

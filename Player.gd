@@ -131,5 +131,6 @@ func _on_Player_body_entered(_body):
 func destroy():
 	hide()
 	started = false	
+
 func get_lifes():
 	return lifes
