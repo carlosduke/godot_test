@@ -89,4 +89,7 @@ one_shot = true
 
 [node name="Camera" type="Camera2D" parent="."]
 
+[node name="BombTimer" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]

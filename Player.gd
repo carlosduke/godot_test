@@ -59,11 +59,16 @@ func shoot(tmp):
 	
 
 func bomb():
-	print('inicio')
+	if not started: return
+	if not $BombTimer.is_stopped():
+		return
+	
+	$BombTimer.start()
 	var b = bomb_scene.instance()
 	
 	b.set_as_toplevel(true)
-	b.bomb(10, 20)
+	b.position = position + Vector2(200,200)
+	#b.bomb(10, 20)
 	add_child(b)
 
 func _process(delta):
