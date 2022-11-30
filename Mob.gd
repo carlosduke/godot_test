@@ -40,9 +40,9 @@ func _on_VisibilityNotifier2D_screen_exited():
 	#queue_free()
 	pass
 
-func kill():
-	if lifes > 0: lifes = lifes -1
+func kill(who):
+	if lifes > 0: lifes = lifes - who.get_dano()
 	$LifeHud.points[1][0] = size_lifes * lifes
 	
-	if lifes == 0:
+	if lifes <= 0:
 		queue_free()

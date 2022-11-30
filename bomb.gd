@@ -1,6 +1,8 @@
 extends Area2D
 
 var started = false
+var dano = 10
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("wee")
@@ -26,5 +28,7 @@ func _on_Timer_timeout():
 
 func _on_bomb_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if body is Mob:
-		body.kill()
+		body.kill(self)
 
+func get_dano():
+	return dano
