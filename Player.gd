@@ -3,6 +3,8 @@ extends Area2D
 signal hit
 
 export(PackedScene) var bullet_scene
+#export(PackedScene) var bomb_scene
+var bomb_scene = preload("res://bomb.tscn")
 export(int) var default_lifes
 export var speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
@@ -33,7 +35,7 @@ func _input(event):
 		mouse_pos = event.global_position
 	if event is InputEventMouseButton and event.is_pressed():
 		var direction = (mouse_pos - position).normalized()
-		shoot(direction)
+		###shoot(direction)
 	#pass
 
 
@@ -57,7 +59,12 @@ func shoot(tmp):
 	
 
 func bomb():
-	print('rola')
+	print('inicio')
+	var b = bomb_scene.instance()
+	
+	b.set_as_toplevel(true)
+	b.bomb(10, 20)
+	add_child(b)
 
 func _process(delta):
 	if not started: return
@@ -76,8 +83,10 @@ func _process(delta):
 		#shoot(1)
 		pass
 	
-	if Input.is_action_pressed("mouse_left"):
+	if Input.is_mouse_button_pressed(1):
 		shoot(1)
+	if Input.is_mouse_button_pressed(2):
+		bomb()	
 		
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed

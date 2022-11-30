@@ -6,7 +6,6 @@ var target = load("res://art/target.png")
 var paused = false
 
 func _ready():
-	print(target)
 	randomize()
 	
 	
