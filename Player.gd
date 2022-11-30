@@ -29,7 +29,7 @@ func _ready():
 	hide()
 
 func _input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseButton:
 		mouse_pos = event.global_position
 	if event is InputEventMouseButton and event.is_pressed():
 		var direction = (mouse_pos - position).normalized()
@@ -55,7 +55,9 @@ func shoot(tmp):
 	bullet.start(velocity, startMap, endMap)
 	add_child(bullet)
 	
-#	print('rola')
+
+func bomb():
+	print('rola')
 
 func _process(delta):
 	if not started: return
@@ -76,7 +78,7 @@ func _process(delta):
 	
 	if Input.is_action_pressed("mouse_left"):
 		shoot(1)
-
+		
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()
@@ -128,7 +130,6 @@ func _on_Player_body_entered(_body):
 	
 func destroy():
 	hide()
-	started = false
-	
+	started = false	
 func get_lifes():
 	return lifes
