@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=5]
 [ext_resource path="res://art/gameover.wav" type="AudioStream" id=6]
 [ext_resource path="res://art/wp2754864.jpg" type="Texture" id=7]
+[ext_resource path="res://Pause.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -55,6 +56,7 @@ rotation = -0.00130776
 stream = ExtResource( 5 )
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 stream = ExtResource( 6 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -69,8 +71,12 @@ position = Vector2( -1409, -659 )
 [node name="EndMap" type="Position2D" parent="."]
 position = Vector2( 2425, 1497 )
 
+[node name="Pause" parent="." instance=ExtResource( 8 )]
+visible = false
+
 [connection signal="hit" from="Player" to="." method="handle_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="resume_game" from="Pause" to="." method="_on_Pause_resume_game"]

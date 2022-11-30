@@ -3,6 +3,7 @@ extends Node
 export(PackedScene) var mob_scene 
 var score
 var target = load("res://art/target.png")
+var paused = false
 
 func _ready():
 	randomize()
@@ -10,6 +11,15 @@ func _ready():
 	
 	$MobPath.get_curve().add_point(Vector2(0,0))
 	
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		handle_pause_resume()
+
+func handle_pause_resume():
+	paused = not paused
+	get_tree().paused = paused
+	$Pause.visible = paused
 
 func handle_hit():
 	$HUD.update_lifes($Player.get_lifes())
@@ -85,5 +95,10 @@ func _on_ScoreTimer_timeout():
 	$HUD.update_score(score)
 
 func _on_StartTimer_timeout():
-	$MobTimer.start()
-	$ScoreTimer.start()
+	#$MobTimer.start()
+	#$ScoreTimer.start()
+	pass
+
+
+func _on_Pause_resume_game():
+	handle_pause_resume()

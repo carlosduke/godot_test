@@ -31,7 +31,7 @@ func _ready():
 	hide()
 
 func _input(event):
-	if event is InputEventMouseButton:
+	if event is InputEventMouseMotion:
 		mouse_pos = event.global_position
 	if event is InputEventMouseButton and event.is_pressed():
 		var direction = (mouse_pos - position).normalized()
