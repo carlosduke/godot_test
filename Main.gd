@@ -2,8 +2,10 @@ extends Node
 
 export(PackedScene) var mob_scene 
 var score
+var target = load("res://art/target.png")
 
 func _ready():
+	print(target)
 	randomize()
 	
 	
@@ -15,12 +17,12 @@ func handle_hit():
 	if $Player.get_lifes() == 0:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		
+		Input.set_custom_mouse_cursor(null)
 		$ScoreTimer.stop()
 		$MobTimer.stop()
 		$HUD.show_game_over()
 		$Music.stop()
 		$DeathSound.play()
-		
 		$Player.destroy()
 
 
@@ -35,6 +37,7 @@ func new_game():
 	$HUD.update_score(score)
 	$HUD.update_lifes($Player.get_lifes())
 	$HUD.show_message("Get Ready")
+	Input.set_custom_mouse_cursor(target)
 	#$Music.play()
 	
 
