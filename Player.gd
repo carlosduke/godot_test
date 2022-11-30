@@ -64,7 +64,6 @@ func bomb(position):
 	var b = bomb_scene.instance()
 	
 	b.set_as_toplevel(true)
-	print(position)
 	b.position.x = position[0]
 	b.position.y= position[1]
 	b.bomb(1,1)
