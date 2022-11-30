@@ -32,6 +32,7 @@ animations = [ {
 
 [node name="Mob" type="RigidBody2D" groups=["mobs"]]
 collision_mask = 0
+mode = 2
 mass = 0.00102041
 gravity_scale = 0.0
 script = ExtResource( 1 )

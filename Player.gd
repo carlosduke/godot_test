@@ -42,9 +42,8 @@ func shoot(tmp):
 	if not $shoot_time.is_stopped():
 		return
 	
-	print("player: ", $shoot_start.get_global_transform_with_canvas().get_origin())
-	
-	print("mouse: ", mouse_pos)
+	#print("player: ", $shoot_start.get_global_transform_with_canvas().get_origin())
+	#print("mouse: ", mouse_pos)
 	$shoot_time.start()
 	var bullet = bullet_scene.instance()
 	#bullet.start(get_position())

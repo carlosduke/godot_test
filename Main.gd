@@ -36,12 +36,16 @@ func new_game():
 	$HUD.update_lifes($Player.get_lifes())
 	$HUD.show_message("Get Ready")
 	#$Music.play()
+	
 
-
-func _on_MobTimer_timeout():
+func create_mob():
 	# Create a new instance of the Mob scene.
 	var mob = mob_scene.instance()
-
+	var speed = rand_range(150.0, 250.0)
+	
+	mob.start($Player, speed)
+	
+	
 	# Choose a random location on Path2D.
 	var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
 	mob_spawn_location.offset = randi()
@@ -51,17 +55,28 @@ func _on_MobTimer_timeout():
 
 	# Set the mob's position to a random location.
 	mob.position = mob_spawn_location.position
-
+	
+	var angle = rand_range(0, 360)
+	mob.position = $Player.position + Vector2(
+		cos(angle),
+		sin(angle)
+	) * 600
+	
 	# Add some randomness to the direction.
 	direction += rand_range(-PI / 4, PI / 4)
 	mob.rotation = direction
 
 	# Choose the velocity for the mob.
-	var velocity = Vector2(rand_range(150.0, 250.0), 0.0)
-	mob.linear_velocity = velocity.rotated(direction)
+	#var velocity = Vector2(rand_range(150.0, 250.0), 0.0)
+	
+	#mob.linear_velocity = velocity.(direction)
 
 	# Spawn the mob by adding it to the Main scene.
-	add_child(mob)
+	return mob
+	#add_child(mob)
+
+func _on_MobTimer_timeout():
+	add_child(create_mob())
 
 func _on_ScoreTimer_timeout():
 	score += 1
