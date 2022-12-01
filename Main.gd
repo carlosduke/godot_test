@@ -55,7 +55,7 @@ func create_mob():
 	var mob = mob_scene.instance()
 	var speed = rand_range(75.0, 150.0)
 	
-	var mob_lifes = score%5
+	var mob_lifes = int(score/10)
 	if mob_lifes < 2: mob_lifes = 2
 	mob.start($Player, speed, mob_lifes)
 	
