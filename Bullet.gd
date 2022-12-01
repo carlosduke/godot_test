@@ -1,4 +1,4 @@
-extends Area2D
+extends Weapon
 
 
 var velocity
@@ -6,7 +6,8 @@ var screen_size # Size of the game window.
 export(int) var bullet_speed
 var startMap
 var endMap
-var dano = 1
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -31,8 +32,6 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 func _on_Bullet_body_entered(body):
 	if body is Mob:
-		body.kill(self)
+		body.kill(get_damage())
 		queue_free()
 
-func get_dano():
-	return dano
