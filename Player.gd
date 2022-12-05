@@ -16,6 +16,8 @@ var size_lifes
 var startMap
 var endMap
 
+var zoom_size = Vector2(.1, .1)
+
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -37,6 +39,10 @@ func _input(event):
 		var direction = (mouse_pos - position).normalized()
 		###shoot(direction)
 	#pass
+	if event.is_action("zoom_in"):
+		zoom(-zoom_size)
+	if event.is_action("zoom_out"):
+		zoom(zoom_size)
 
 
 func shoot(tmp):
@@ -127,6 +133,10 @@ func start(pos, sm, em):
 	$CollisionShape2D.disabled = false
 	started = true
 	
+func zoom(zoom_size):
+	$Camera.zoom += zoom_size
+	$Camera.zoom.x = clamp($Camera.zoom.x, 0.4, 2)
+	$Camera.zoom.y = clamp($Camera.zoom.y, 0.4, 2)
 
 
 func _on_Player_body_entered(_body):

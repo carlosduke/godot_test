@@ -1,6 +1,13 @@
 extends Node
 
 export(PackedScene) var mob_scene 
+export(int) var height = 600
+export(int) var width = 600
+
+var map_alt = []
+var map_temp = []
+var started = false
+
 var score
 var target = load("res://art/target.png")
 var paused = false
@@ -34,6 +41,134 @@ func handle_hit():
 		$DeathSound.play()
 		$Player.destroy()
 
+var map_terrain = {
+	"water": {
+		"alt": Vector2(-1, -0.2),
+		"temp": Vector2(-1, 1),
+		"tile": 1
+	},
+	"grass": {
+		"alt": Vector2(-0.2, 0.5),
+		"temp": Vector2(-0.5, 0.4),
+		"tile": 0
+	},
+	"sand": {
+		"alt": Vector2(-0.2, 1),
+		"temp": Vector2(0.4, 1),
+		"tile": 4
+	},
+	"earth": {
+		"alt": Vector2(0.5, 1),
+		"temp": Vector2(-0.5,0.4),
+		"tile": 3
+	},
+	"ice": {
+		"alt": Vector2(-0.2, 1),
+		"temp": Vector2(-1,-0.5),
+		"tile": 2
+	}
+}
+
+var map_objs = {
+	"sand": {
+		"name": "cactus",
+		"prob": 0.005,
+		"scene": preload("res://scenes/map/Cactus.tscn")
+	},
+	"grass": {
+		"name": "tree",
+		"prob": 0.01,
+		"scene": preload("res://scenes/map/Tree.tscn")
+	},
+	"ice": {
+		"name": "snow_man",
+		"prob": 0.005,
+		"scene": preload("res://scenes/map/SnowMan.tscn")
+	}
+}
+
+var tile_id_name = {
+	0: 'grass',
+	1: 'water',
+	2: 'ice',
+	3: 'earth',
+	4: 'sand'
+}
+
+func generate_map(_seed):
+#	seed(_seed)
+	
+	var noise = OpenSimplexNoise.new()
+	noise.seed = _seed
+	noise.octaves = 2
+	noise.period = 30.0
+	noise.persistence = 0.8
+	
+	var map = []
+	for c in range(0,height):
+		map.append([])
+		for l in range(0,width):
+			#var n = rng.randi()
+			#var alt = rng.randf_range(0,1)
+			var noise_v = noise.get_noise_2d(c,l)
+			map[c].append(noise_v)
+			#print(alt, ', ', tmp)
+			
+	return map
+
+func between(v, _min, _max):
+	return _min <= v && v < _max
+
+func set_tiles():
+	for c in range(0, height):
+		for l in range(0,width):
+			var pos = Vector2(c,l)
+			var alt = map_alt[c][l]
+			var temp = map_temp[c][l]
+			
+			var tile = 0
+			for k in map_terrain:
+				var terrain = map_terrain[k]
+				if between(alt, terrain.alt.x, terrain.alt.y) and between(temp, terrain.temp.x, terrain.temp.y):
+					tile = terrain.tile
+#					if k in map_objs:
+#						var obj = map_objs[k]
+#						if randf() <= obj['prob']:
+#							#print(obj['name'], ': ', k)
+#							var sobj = obj['scene'].instance()
+#							sobj.position = pos * $TileMap.cell_size + $TileMap.position
+#							#print("tile: ", k , " - ", pos, ": ", sobj.position, ", ", $TileMap.cell_size)
+#							#print(sobj.position)
+#							add_child(sobj)
+					break
+
+			$TileMap.set_cellv(pos, tile)
+
+func new_map(_seed):
+	seed(_seed)
+	var seed_alt = randi()
+	var seed_temp = randi()
+	
+	var map_elements = get_tree().get_nodes_in_group('map_element')
+	for element in map_elements:
+		element.queue_free()
+
+	map_alt = generate_map(seed_alt)
+	map_temp = generate_map(seed_temp)
+	set_tiles()
+# Called when the node enters the scene tree for the first time.
+
+func start_map(_seed):
+	new_map(_seed.hash())
+	
+	var size = Vector2(height, width) * $TileMap.cell_size
+	var min_pos = $TileMap.position
+	var max_pos = size + $TileMap.position #* $TileMap.cell_size
+	print(max_pos, "-", size, "-", $TileMap.position* $TileMap.cell_size)
+	$Player.start($StartPosition.position, min_pos, max_pos)
+	#print(map_alt)
+	#$Player.show()
+	
 
 func new_game():
 	#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -47,6 +182,8 @@ func new_game():
 	$HUD.update_lifes($Player.get_lifes())
 	$HUD.show_message("Get Ready")
 	Input.set_custom_mouse_cursor(target)
+	
+	start_map('3')
 	#$Music.play()
 	
 
@@ -97,8 +234,9 @@ func _on_ScoreTimer_timeout():
 	$HUD.update_score(score)
 
 func _on_StartTimer_timeout():
-	$MobTimer.start()
-	$ScoreTimer.start()
+#	$MobTimer.start()
+#	$ScoreTimer.start()
+	pass
 
 func _on_Pause_resume_game():
 	handle_pause_resume()
