@@ -34,4 +34,8 @@ func _on_Bullet_body_entered(body):
 	if body is Mob:
 		body.kill(get_damage())
 		queue_free()
+	
+	if body is BaseItem:
+		body.apply_damage(get_damage())
+		queue_free()
 

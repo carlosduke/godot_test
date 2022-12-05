@@ -25,12 +25,12 @@ func _ready():
 func apply_damage(damage: float):
 	health = clamp(health - damage, 0, base_health)
 	if health == 0.0:
-		var map = get_tree().get_nodes_in_group('map')[0]
+		var world = get_tree().get_current_scene()
 		for drop_item in drop_items:
 			var rng = randf()
 			#print(rng, ': ', drop_item['chance'], ' - ', drop_item['chance'] <= rng)
 			if rng <= drop_item['chance']:
 				var drop = drop_item['scene'].instance()
 				drop.position = position
-				map.add_child(drop)
+				world.add_child(drop)
 		queue_free()
