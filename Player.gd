@@ -5,7 +5,7 @@ signal hit
 export(PackedScene) var bullet_scene
 #export(PackedScene) var bomb_scene
 var bomb_scene = preload("res://bomb.tscn")
-export(int) var default_lifes
+export(int) var default_lifes = 10
 export var base_speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
 var mouse_pos
@@ -33,7 +33,6 @@ var terrain_stats = {
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	size_lifes = $LifeHud.points[0].distance_to($LifeHud.points[1]) / default_lifes
 	
 	# Static types are necessary here to avoid warnings.
 	var camera: Camera2D = $Camera
@@ -158,10 +157,9 @@ func start(pos, sm, em):
 	$Camera.limit_right = em.x
 	$Camera.limit_bottom = em.y
 	
-	$LifeHud.points[1][0] = size_lifes * lifes
-	
 	show()
 	$CollisionShape2D.disabled = false
+	$HealthBar.start(default_lifes)
 	started = true
 	
 func zoom(zoom_size):
@@ -180,6 +178,8 @@ func _on_Player_body_entered(_body):
 #	_body.kill()
 #
 #	emit_signal("hit")
+	$HealthBar.set_health(lifes)
+	
 	pass
 	
 func destroy():

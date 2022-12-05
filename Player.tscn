@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://art/playerGrey_walk1.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://art/playerGrey_up1.png" type="Texture" id=4]
 [ext_resource path="res://art/playerGrey_up2.png" type="Texture" id=5]
 [ext_resource path="res://Bullet.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/HealthBar.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -54,7 +55,6 @@ __meta__ = {
 "_edit_group_": true
 }
 bullet_scene = ExtResource( 6 )
-default_lifes = 10
 base_speed = 100
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
@@ -75,12 +75,6 @@ local_coords = false
 process_material = SubResource( 7 )
 texture = ExtResource( 2 )
 
-[node name="LifeHud" type="Line2D" parent="."]
-position = Vector2( -25, -50 )
-points = PoolVector2Array( 0, 0, 50, 0 )
-width = 5.0
-default_color = Color( 1, 0.4, 0.470588, 1 )
-
 [node name="shoot_start" type="Position2D" parent="."]
 
 [node name="shoot_time" type="Timer" parent="."]
@@ -91,5 +85,12 @@ one_shot = true
 one_shot = true
 
 [node name="Camera" type="Camera2D" parent="."]
+
+[node name="HealthBar" parent="." instance=ExtResource( 7 )]
+margin_left = -34.0
+margin_top = -54.0
+margin_right = 566.0
+margin_bottom = 46.0
+rect_scale = Vector2( 0.1, 0.1 )
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
