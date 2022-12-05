@@ -6,7 +6,7 @@ export(PackedScene) var bullet_scene
 #export(PackedScene) var bomb_scene
 var bomb_scene = preload("res://bomb.tscn")
 export(int) var default_lifes
-export var speed = 400 # How fast the player will move (pixels/sec).
+export var base_speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
 var mouse_pos
 var started = false
@@ -15,9 +15,21 @@ var size_lifes
 
 var startMap
 var endMap
+var current_terrain
 
 var zoom_size = Vector2(.1, .1)
 
+var terrain_stats = {
+	'water': {
+		'speed': -20
+	},
+	'ice': {
+		'speed': -50
+	},
+	'grass': {
+		'speed': 30
+	}
+}
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -96,7 +108,17 @@ func _process(delta):
 		shoot(1)
 	if Input.is_mouse_button_pressed(2):
 		bomb(get_global_mouse_position())	
-		
+	
+	var speed = base_speed
+	if current_terrain['name'] in terrain_stats:
+		var cur_stats = terrain_stats[current_terrain['name']]
+		if 'speed' in cur_stats:
+			var speed_change = terrain_stats[current_terrain['name']]['speed']
+			speed += speed_change
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * speed
+#		print(position)
+	
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()
@@ -115,6 +137,15 @@ func _process(delta):
 	elif velocity.y != 0:
 		$AnimatedSprite.animation = "up"
 		$AnimatedSprite.flip_v = velocity.y > 0
+
+func change_terrain(terrain):
+#	Struct:
+#	{
+#		'id': tile_id,
+#		'name': 'tile_name'
+#	}
+#	print(terrain)
+	current_terrain = terrain
 
 
 func start(pos, sm, em):
@@ -141,14 +172,15 @@ func zoom(zoom_size):
 
 func _on_Player_body_entered(_body):
 	#_body.rola()
-	if lifes > 0: lifes -= 1
-	else: return
-	
-	#print("cur size: ", size_lifes * lifes)
-	$LifeHud.points[1][0] = size_lifes * lifes
-	_body.kill()
-	
-	emit_signal("hit")
+#	if lifes > 0: lifes -= 1
+#	else: return
+#
+#	#print("cur size: ", size_lifes * lifes)
+#	$LifeHud.points[1][0] = size_lifes * lifes
+#	_body.kill()
+#
+#	emit_signal("hit")
+	pass
 	
 func destroy():
 	hide()

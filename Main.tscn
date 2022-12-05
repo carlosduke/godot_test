@@ -103,6 +103,7 @@ color = Color( 0.219608, 0.372549, 0.380392, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 102, -42 )
+scale = Vector2( 0.125, 0.125 )
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5

@@ -131,15 +131,15 @@ func set_tiles():
 				var terrain = map_terrain[k]
 				if between(alt, terrain.alt.x, terrain.alt.y) and between(temp, terrain.temp.x, terrain.temp.y):
 					tile = terrain.tile
-#					if k in map_objs:
-#						var obj = map_objs[k]
-#						if randf() <= obj['prob']:
-#							#print(obj['name'], ': ', k)
-#							var sobj = obj['scene'].instance()
-#							sobj.position = pos * $TileMap.cell_size + $TileMap.position
-#							#print("tile: ", k , " - ", pos, ": ", sobj.position, ", ", $TileMap.cell_size)
-#							#print(sobj.position)
-#							add_child(sobj)
+					if k in map_objs:
+						var obj = map_objs[k]
+						if randf() <= obj['prob']:
+							#print(obj['name'], ': ', k)
+							var sobj = obj['scene'].instance()
+							sobj.position = pos * $TileMap.cell_size + $TileMap.position
+							#print("tile: ", k , " - ", pos, ": ", sobj.position, ", ", $TileMap.cell_size)
+							#print(sobj.position)
+							add_child(sobj)
 					break
 
 			$TileMap.set_cellv(pos, tile)
@@ -166,6 +166,7 @@ func start_map(_seed):
 	var max_pos = size + $TileMap.position #* $TileMap.cell_size
 	print(max_pos, "-", size, "-", $TileMap.position* $TileMap.cell_size)
 	$Player.start($StartPosition.position, min_pos, max_pos)
+	started = true
 	#print(map_alt)
 	#$Player.show()
 	
@@ -240,3 +241,21 @@ func _on_StartTimer_timeout():
 
 func _on_Pause_resume_game():
 	handle_pause_resume()
+
+var last_tile_id
+func _process(delta):
+	if not started: return
+	
+	var local_position = $TileMap.to_local($Player.global_position)
+	var cell = $TileMap.world_to_map(local_position)
+	var tile_id = $TileMap.get_cellv(cell)
+	if tile_id < 0: return
+	
+	if last_tile_id != tile_id:
+		#print('Player: ', $Player.global_position, ', Cell: ', cell, ', ID: ', tile_id)
+		last_tile_id = tile_id
+		$Player.change_terrain({
+			'id': tile_id,
+			'name': tile_id_name[tile_id]
+		})
+	#print('TileID: ', tile_id)
