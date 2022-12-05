@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/HealthBar.gd" type="Script" id=1]
+[ext_resource path="res://art/health_green.png" type="Texture" id=2]
+
+[node name="HealthBar" type="TextureProgress"]
+margin_right = 600.0
+margin_bottom = 100.0
+value = 100.0
+texture_progress = ExtResource( 2 )
+script = ExtResource( 1 )
