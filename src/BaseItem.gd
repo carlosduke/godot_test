@@ -2,7 +2,7 @@ class_name BaseItem
 extends RigidBody2D
 
 export(float) var base_health = 10.0
-export(float) var base_damage = 0
+export(float) var base_damage = 0.0
 
 var health_bar: HealthBar
 var health

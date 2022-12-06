@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://art/wp2754864.jpg" type="Texture" id=7]
 [ext_resource path="res://scenes/hud/Pause.tscn" type="PackedScene" id=8]
 [ext_resource path="res://art/map/map.png" type="Texture" id=9]
+[ext_resource path="res://scenes/hud/inventory/Inventory.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -102,7 +103,7 @@ margin_bottom = -300.24
 color = Color( 0.219608, 0.372549, 0.380392, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 102, -42 )
+position = Vector2( 514, 385 )
 scale = Vector2( 0.125, 0.125 )
 
 [node name="MobTimer" type="Timer" parent="."]
@@ -158,6 +159,8 @@ z_index = -1
 tile_set = SubResource( 2 )
 cell_size = Vector2( 8, 8 )
 format = 1
+
+[node name="Inventory" parent="." instance=ExtResource( 10 )]
 
 [connection signal="hit" from="Player" to="." method="handle_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]

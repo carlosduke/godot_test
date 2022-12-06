@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/HealthBar.gd"
 }, {
-"base": "TextureRect",
+"base": "Node2D",
 "class": "Item",
 "language": "GDScript",
 "path": "res://src/hud/inventory/Item.gd"
@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Player.gd"
 }, {
+"base": "TextureRect",
+"class": "SlotItem",
+"language": "GDScript",
+"path": "res://src/hud/inventory/SlotItem.gd"
+}, {
 "base": "Area2D",
 "class": "Weapon",
 "language": "GDScript",
@@ -45,6 +50,7 @@ _global_script_class_icons={
 "Item": "",
 "Mob": "",
 "Player": "",
+"SlotItem": "",
 "Weapon": ""
 }
 
@@ -59,6 +65,11 @@ tutorial in the documentation. For more details, consider
 following the tutorial in the documentation."
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+UserData="*res://src/configs/UserData.gd"
+ItemsData="*res://src/configs/ItemsData.gd"
 
 [display]
 
