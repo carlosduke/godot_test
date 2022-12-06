@@ -10,6 +10,5 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
 func _on_Resume_pressed():
 	emit_signal('resume_game')

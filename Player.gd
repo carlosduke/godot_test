@@ -49,6 +49,7 @@ func _ready():
 	hide()
 
 func _input(event):
+	if not started: return
 	if event is InputEventMouseMotion:
 		mouse_pos = event.global_position
 	if event is InputEventMouseButton and event.is_pressed():
@@ -171,8 +172,8 @@ func start(pos, sm, em):
 	
 func zoom(zoom_size):
 	$Camera.zoom += zoom_size
-	$Camera.zoom.x = clamp($Camera.zoom.x, 0.4, 2)
-	$Camera.zoom.y = clamp($Camera.zoom.y, 0.4, 2)
+	$Camera.zoom.x = clamp($Camera.zoom.x, 0.4, 10)
+	$Camera.zoom.y = clamp($Camera.zoom.y, 0.4, 10)
 
 
 func _on_Player_body_entered(_body):

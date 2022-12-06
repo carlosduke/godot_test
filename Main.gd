@@ -25,6 +25,7 @@ func _input(event):
 
 func handle_pause_resume():
 	paused = not paused
+	print(paused)
 	get_tree().paused = paused
 	$Pause.visible = paused
 

@@ -3,11 +3,11 @@
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/hud/HUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=5]
 [ext_resource path="res://art/gameover.wav" type="AudioStream" id=6]
 [ext_resource path="res://art/wp2754864.jpg" type="Texture" id=7]
-[ext_resource path="res://Pause.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/hud/Pause.tscn" type="PackedScene" id=8]
 [ext_resource path="res://art/map/map.png" type="Texture" id=9]
 
 [sub_resource type="Curve2D" id=1]
