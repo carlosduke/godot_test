@@ -19,6 +19,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/HealthBar.gd"
 }, {
+"base": "TextureRect",
+"class": "Item",
+"language": "GDScript",
+"path": "res://src/hud/inventory/Item.gd"
+}, {
 "base": "RigidBody2D",
 "class": "Mob",
 "language": "GDScript",
@@ -37,6 +42,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "BaseItem": "",
 "HealthBar": "",
+"Item": "",
 "Mob": "",
 "Player": "",
 "Weapon": ""

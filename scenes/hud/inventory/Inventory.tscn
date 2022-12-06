@@ -1,0 +1,157 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/hud/inventory/Item.tscn" type="PackedScene" id=1]
+[ext_resource path="res://art/hud/inventory/items_grade.png" type="Texture" id=2]
+[ext_resource path="res://scenes/hud/inventory/Inventory.gd" type="Script" id=3]
+
+[node name="Inventory" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 698, 354 )
+texture = ExtResource( 2 )
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 397.0
+margin_top = 153.0
+margin_right = 997.0
+margin_bottom = 553.0
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+columns = 6
+
+[node name="Item" parent="GridContainer" instance=ExtResource( 1 )]
+margin_right = 100.0
+margin_bottom = 100.0
+
+[node name="Item2" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 100.0
+margin_right = 200.0
+margin_bottom = 100.0
+
+[node name="Item3" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 200.0
+margin_right = 300.0
+margin_bottom = 100.0
+
+[node name="Item4" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 300.0
+margin_right = 400.0
+margin_bottom = 100.0
+
+[node name="Item5" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 400.0
+margin_right = 500.0
+margin_bottom = 100.0
+
+[node name="Item6" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 500.0
+margin_right = 600.0
+margin_bottom = 100.0
+
+[node name="Item7" parent="GridContainer" instance=ExtResource( 1 )]
+margin_top = 100.0
+margin_right = 100.0
+margin_bottom = 200.0
+
+[node name="Item8" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 100.0
+margin_top = 100.0
+margin_right = 200.0
+margin_bottom = 200.0
+
+[node name="Item9" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 200.0
+margin_top = 100.0
+margin_right = 300.0
+margin_bottom = 200.0
+
+[node name="Item10" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 300.0
+margin_top = 100.0
+margin_right = 400.0
+margin_bottom = 200.0
+
+[node name="Item11" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 400.0
+margin_top = 100.0
+margin_right = 500.0
+margin_bottom = 200.0
+
+[node name="Item12" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 500.0
+margin_top = 100.0
+margin_right = 600.0
+margin_bottom = 200.0
+
+[node name="Item13" parent="GridContainer" instance=ExtResource( 1 )]
+margin_top = 200.0
+margin_right = 100.0
+margin_bottom = 300.0
+
+[node name="Item14" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 100.0
+margin_top = 200.0
+margin_right = 200.0
+margin_bottom = 300.0
+
+[node name="Item15" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 200.0
+margin_top = 200.0
+margin_right = 300.0
+margin_bottom = 300.0
+
+[node name="Item16" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 300.0
+margin_top = 200.0
+margin_right = 400.0
+margin_bottom = 300.0
+
+[node name="Item17" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 400.0
+margin_top = 200.0
+margin_right = 500.0
+margin_bottom = 300.0
+
+[node name="Item18" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 500.0
+margin_top = 200.0
+margin_right = 600.0
+margin_bottom = 300.0
+
+[node name="Item19" parent="GridContainer" instance=ExtResource( 1 )]
+margin_top = 300.0
+margin_right = 100.0
+margin_bottom = 400.0
+
+[node name="Item20" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 100.0
+margin_top = 300.0
+margin_right = 200.0
+margin_bottom = 400.0
+
+[node name="Item21" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 200.0
+margin_top = 300.0
+margin_right = 300.0
+margin_bottom = 400.0
+
+[node name="Item22" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 300.0
+margin_top = 300.0
+margin_right = 400.0
+margin_bottom = 400.0
+
+[node name="Item23" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 400.0
+margin_top = 300.0
+margin_right = 500.0
+margin_bottom = 400.0
+
+[node name="Item24" parent="GridContainer" instance=ExtResource( 1 )]
+margin_left = 500.0
+margin_top = 300.0
+margin_right = 600.0
+margin_bottom = 400.0
