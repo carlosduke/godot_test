@@ -26,10 +26,10 @@ func _ready():
 	$AnimatedSprite.animation = mob_types[randi() % mob_types.size()]
 	
 func _process(delta):
-	var dir_player = position.direction_to(player.position)
+#	var dir_player = position.direction_to(player.position)
 	#var cur_velocity = linear_velocity
 	#print("process: ", dir_player)
-	var velocity = position.direction_to(player.position) * speed
+	var velocity = position.direction_to(player.position) * speed * delta
 	linear_velocity = velocity
 	
 	

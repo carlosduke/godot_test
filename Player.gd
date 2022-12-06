@@ -1,3 +1,4 @@
+class_name Player
 extends Area2D
 
 signal hit
@@ -8,6 +9,10 @@ var bomb_scene = preload("res://bomb.tscn")
 export(int) var default_lifes = 10
 export var base_speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
+
+export(float) var base_health = 10.0
+var health: float
+
 var mouse_pos
 var started = false
 var lifes
@@ -159,7 +164,9 @@ func start(pos, sm, em):
 	
 	show()
 	$CollisionShape2D.disabled = false
-	$HealthBar.start(default_lifes)
+	
+	health = base_health
+	$HealthBar.start(base_health)
 	started = true
 	
 func zoom(zoom_size):
@@ -178,7 +185,9 @@ func _on_Player_body_entered(_body):
 #	_body.kill()
 #
 #	emit_signal("hit")
-	$HealthBar.set_health(lifes)
+	if _body is BaseItem:
+		health = clamp(health - _body.get_damage(), 0, base_health)
+		$HealthBar.set_health(health)
 	
 	pass
 	

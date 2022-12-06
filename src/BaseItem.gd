@@ -1,9 +1,12 @@
 class_name BaseItem
-extends StaticBody2D
+extends RigidBody2D
 
 export(float) var base_health = 10.0
+export(float) var base_damage = 0
+
 var health_bar: HealthBar
 var health
+var damage: float
 var drop_items = []
 
 func get_health():
@@ -29,6 +32,7 @@ func add_drop(chance: float, scene: PackedScene, _min: int, _max: int):
 
 func _ready():
 	set_health(base_health)
+	damage = base_damage
 
 func apply_damage(damage: float):
 	health = clamp(health - damage, 0, base_health)
@@ -45,3 +49,6 @@ func apply_damage(damage: float):
 				drop.position = position
 				world.add_child(drop)
 		queue_free()
+
+func get_damage():
+	return damage

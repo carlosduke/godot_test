@@ -8,7 +8,8 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1.5, 3 )
 
-[node name="Tree" type="StaticBody2D"]
+[node name="Tree" type="RigidBody2D"]
+gravity_scale = 0.0
 script = ExtResource( 2 )
 log_scene = ExtResource( 3 )
 

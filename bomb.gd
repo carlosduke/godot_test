@@ -6,7 +6,7 @@ var started = false
 func _ready():
 	$Timer.stop()
 	
-func bomb(x, y):
+func bomb(_x, _y):
 	$AnimatedSprite.play("default")
 
 func _process(delta):
