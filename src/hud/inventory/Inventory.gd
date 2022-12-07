@@ -15,8 +15,8 @@ func _ready():
 		child.connect('gui_input', self, 'slot_gui_input', [child, i])
 	
 	UserData.start(stock_size)
-	for i in range(stock_size):
-		UserData.set_item(i, 'log', randi()%50)
+#	for i in range(stock_size):
+#		UserData.set_item(i, 'log', randi()%50)
 	refresh()
 
 func refresh():

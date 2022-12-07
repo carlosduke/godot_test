@@ -34,6 +34,7 @@ func add_item(type: String, quantity: int):
 		break
 	if quantity > 0 and f_empty >= 0:
 		set_item(f_empty, type, quantity)
+		quantity = 0
 	print('Remain: ', quantity, ', f: ', f_empty)
 	return quantity
 
