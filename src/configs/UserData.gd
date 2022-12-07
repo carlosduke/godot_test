@@ -9,18 +9,29 @@ func is_empty(idx: int):
 	return items[idx] == null
 
 func set_item_data(idx: int, item):
-	return set_item(idx, item['type'], item['icon'], item['quantity'])
+	return set_item(idx, item['type'], item['quantity'])
 	
-func set_item(idx: int, _type: String, _icon: String, _quantity: int):
+func set_item(idx: int, _type: String, _quantity: int):
 	if idx < 0 || idx >= items.size():
 		print('Invalid index: ', idx)
 		return
+	var config = ItemsData.items[_type]
 	var previous_item = items[idx]
+	
 	var item = {
 		'type': _type,
-		'icon': _icon,
+		'icon': config['icon'],
 		'quantity': _quantity,
 	}
+	
+	if previous_item != null and previous_item['type'] == _type and config.stackable:
+		item.quantity += previous_item.quantity
+		if item.quantity > config.max_size:
+			previous_item['quantity'] = item['quantity'] - config.max_size
+			item.quantity = config.max_size
+		else:
+			previous_item = null
+	
 	items[idx] = item
 	return previous_item
 

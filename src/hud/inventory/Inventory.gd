@@ -16,7 +16,7 @@ func _ready():
 		child.connect('gui_input', self, 'slot_gui_input', [child, i])
 	
 	for i in range(stock_size):
-		UserData.set_item(i, 'log', "log", randi()%50)
+		UserData.set_item(i, 'log', randi()%50)
 		var slot = $GridContainer.get_child(i)
 		slot.set_item(i)
 
@@ -34,22 +34,13 @@ func slot_gui_input(event: InputEvent, slot: SlotItem, index: int):
 				#print('Pressed: ', slot, ', index: ', index)
 				if is_holding():
 					var item_data = holding_item.get_data()
-					var cur_item = UserData.release_item(index)
-					if cur_item != null:
-						var config =  ItemsData.items[cur_item['type']]
-						if cur_item['type'] == item_data['type'] and config.stackable:
-							var total_quantity = item_data['quantity'] + cur_item['quantity']
-							if total_quantity > config.max_size:
-								item_data['quantity'] = total_quantity - config.max_size
-								cur_item['quantity'] = config.max_size
-								holding_item.start(item_data)
-								UserData.set_item_data(index, cur_item)
-								slot.set_item(index)
-								
-								return
-							else:
-								item_data['quantity'] = total_quantity
-					UserData.set_item_data(index, item_data)
+					var previous_data = UserData.set_item_data(index, item_data)
+					
+					if previous_data != null:
+						holding_item.start(previous_data)
+						slot.set_item(index)
+						return
+					
 					slot.set_item(index)
 					release_holding()
 				elif not UserData.is_empty(index):

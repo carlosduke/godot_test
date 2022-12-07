@@ -9,10 +9,8 @@ func set_item(idx: int):
 		release_item()
 	else:
 		var data = UserData.get_item(idx)
-		var icon_img = load('res://art/hud/items/%s_icon.png' % data['icon'])
-		if icon_img:
-			icon.texture = icon_img
-			lblQtd.text = str(data['quantity'])
+		icon.texture = data['icon']
+		lblQtd.text = str(data['quantity'])
 
 func release_item():
 	icon.texture = null
