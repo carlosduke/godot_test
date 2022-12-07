@@ -9,6 +9,7 @@ var health
 var damage: float
 var drop_items = []
 
+
 func get_health():
 	return health
 
@@ -22,10 +23,11 @@ func set_health_bar(bar: HealthBar):
 	health_bar = bar
 	bar.start(base_health)
 
-func add_drop(chance: float, scene: PackedScene, _min: int, _max: int):
+func add_drop(chance: float, scene: PackedScene, type: String, _min: int, _max: int):
 	drop_items.append({
 		'chance': chance,
 		'scene': scene,
+		'type': type,
 		'min': _min,
 		'max': _max
 	})
@@ -46,6 +48,9 @@ func apply_damage(damage: float):
 			#print(rng, ': ', drop_item['chance'], ' - ', drop_item['chance'] <= rng)
 			if rng <= drop_item['chance']:
 				var drop = drop_item['scene'].instance()
+				if drop is DropItem:
+					var qtd_drop = (randi()%drop_item['max'] - drop_item['min']) + drop_item['min']
+					drop.start(qtd_drop)
 				drop.position = position
 				world.add_child(drop)
 		queue_free()

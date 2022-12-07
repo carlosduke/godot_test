@@ -2,8 +2,40 @@ extends Node
 
 var items = []
 
-func add_item(item):
-	items.append(item)
+func start(size: int):
+	items.clear()
+	for i in range(size):
+		items.append(null)
+
+func add_item(type: String, quantity: int):
+	var config = ItemsData.items[type]
+	var f_empty = -1
+	for idx in range(items.size()):
+		var item = items[idx]
+		if item == null and not config.stackable:
+			set_item_data(idx, {
+				'type': type,
+				'quantity': quantity
+			})
+			return
+		elif item == null and f_empty < 0:
+			f_empty = idx
+			continue
+		elif item == null: continue
+		
+		if item['type'] == type and item['quantity'] == config['max_size']: continue
+		item['quantity'] += quantity
+		if item['quantity'] > config['max_size']:
+			quantity = item['quantity'] - config['max_size']
+			item['quantity'] = config['max_size']
+			continue
+		else:
+			quantity = 0
+		break
+	if quantity > 0 and f_empty >= 0:
+		set_item(f_empty, type, quantity)
+	print('Remain: ', quantity, ', f: ', f_empty)
+	return quantity
 
 func is_empty(idx: int):
 	return items[idx] == null

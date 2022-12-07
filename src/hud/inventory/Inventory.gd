@@ -11,19 +11,28 @@ var stock_size
 func _ready():
 	stock_size = cols*lines
 	for i in range(stock_size):
-		UserData.add_item(null)
 		var child = $GridContainer.get_child(i)
 		child.connect('gui_input', self, 'slot_gui_input', [child, i])
 	
+	UserData.start(stock_size)
 	for i in range(stock_size):
 		UserData.set_item(i, 'log', randi()%50)
-		var slot = $GridContainer.get_child(i)
-		slot.set_item(i)
+	refresh()
 
+func refresh():
+	release_holding()
+	
+	for i in range(stock_size):
+		var slot = $GridContainer.get_child(i)
+		#print('[%d]: ' % i, 'Slot: ', slot, ', Item: ', UserData.get_item(i))
+		slot.set_item(i)
+	
 func is_holding():
 	return holding_item != null
 
 func release_holding():
+	if holding_item == null: return
+	
 	holding_item.queue_free()
 	holding_item = null
 

@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/BaseItem.gd"
 }, {
+"base": "StaticBody2D",
+"class": "DropItem",
+"language": "GDScript",
+"path": "res://src/Log.gd"
+}, {
 "base": "TextureProgress",
 "class": "HealthBar",
 "language": "GDScript",
@@ -46,6 +51,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BaseItem": "",
+"DropItem": "",
 "HealthBar": "",
 "Item": "",
 "Mob": "",

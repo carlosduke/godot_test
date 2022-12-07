@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://art/wp2754864.jpg" type="Texture" id=7]
 [ext_resource path="res://scenes/hud/Pause.tscn" type="PackedScene" id=8]
 [ext_resource path="res://art/map/map.png" type="Texture" id=9]
-[ext_resource path="res://scenes/hud/inventory/Inventory.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -91,6 +90,8 @@ _data = {
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
 mob_scene = ExtResource( 2 )
+height = 200
+width = 200
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -127,7 +128,6 @@ position = Vector2( -1411, -658 )
 rotation = -0.00130776
 
 [node name="HUD" parent="." instance=ExtResource( 4 )]
-visible = false
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
@@ -159,8 +159,6 @@ z_index = -1
 tile_set = SubResource( 2 )
 cell_size = Vector2( 8, 8 )
 format = 1
-
-[node name="Inventory" parent="." instance=ExtResource( 10 )]
 
 [connection signal="hit" from="Player" to="." method="handle_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]

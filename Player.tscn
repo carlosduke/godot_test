@@ -85,6 +85,7 @@ one_shot = true
 one_shot = true
 
 [node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2( 0.2, 0.2 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 7 )]
 margin_left = -34.0

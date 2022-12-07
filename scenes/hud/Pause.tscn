@@ -25,4 +25,5 @@ margin_right = 450.0
 margin_bottom = 72.0
 text = "Pausa"
 
+[connection signal="visibility_changed" from="." to="." method="_on_Pause_visibility_changed"]
 [connection signal="pressed" from="Resume" to="." method="_on_Resume_pressed"]
