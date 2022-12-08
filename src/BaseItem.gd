@@ -3,6 +3,7 @@ extends RigidBody2D
 
 export(float) var base_health = 10.0
 export(float) var base_damage = 0.0
+signal killed
 
 var health_bar: HealthBar
 var health
@@ -51,8 +52,12 @@ func apply_damage(damage: float):
 				if drop is DropItem:
 					var qtd_drop = (randi()%drop_item['max'] - drop_item['min']) + drop_item['min']
 					drop.start(qtd_drop)
-				drop.position = position
-				world.add_child(drop)
+					print(drop)
+					drop.position = position
+					world.add_child(drop)
+				else:
+					drop.queue_free()
+		emit_signal('killed')
 		queue_free()
 
 func get_damage():

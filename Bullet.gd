@@ -32,7 +32,7 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 func _on_Bullet_body_entered(body):
 	if body is Mob:
-		body.kill(get_damage())
+		body.apply_damage(get_damage())
 		queue_free()
 	
 	if body is BaseItem:

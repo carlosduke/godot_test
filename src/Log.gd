@@ -2,7 +2,7 @@ class_name DropItem
 extends StaticBody2D
 
 #TODO: criar generico
-export(String) var type = 'log'
+export(String) var type = 'bomb'
 
 onready var lblQtd = $lblQtd
 var quantity
@@ -12,6 +12,7 @@ func start(quantity):
 
 func _ready():
 	set_quantity(quantity)
+	print('bomb...')
 
 func get_quantity():
 	return quantity

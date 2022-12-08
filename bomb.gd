@@ -25,8 +25,5 @@ func _on_Timer_timeout():
 
 
 func _on_bomb_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	if body is Mob:
-		body.kill(get_damage())
-	
 	if body is BaseItem:
 		body.apply_damage(get_damage())

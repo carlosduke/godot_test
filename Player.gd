@@ -111,7 +111,7 @@ func _process(delta):
 	
 	if Input.is_mouse_button_pressed(1):
 		shoot(1)
-	if Input.is_mouse_button_pressed(2):
+	if Input.is_mouse_button_pressed(BUTTON_RIGHT):
 		bomb(get_global_mouse_position())	
 	
 	var speed = base_speed

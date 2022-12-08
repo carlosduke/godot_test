@@ -9,6 +9,7 @@
 extents = Vector2( 1.5, 3 )
 
 [node name="Tree" type="RigidBody2D"]
+mode = 1
 gravity_scale = 0.0
 script = ExtResource( 2 )
 log_scene = ExtResource( 3 )

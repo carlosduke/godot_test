@@ -1,5 +1,8 @@
 extends Node
 
+onready var tilemap = $Navigation2D/TileMap
+var base_path = preload("res://scenes/hud/Path.tscn")
+
 export(PackedScene) var mob_scene 
 export(int) var height = 600
 export(int) var width = 600
@@ -19,9 +22,16 @@ func _ready():
 	$MobPath.get_curve().add_point(Vector2(0,0))
 	
 
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_cancel") and not paused:
 		handle_pause_resume()
+	
+	if event is InputEventMouseButton and event.get_button_index() == BUTTON_MIDDLE and event.is_pressed():
+		print('Add Mob, ', event.global_position)
+		if not $MobTimer.is_stopped(): return
+		$MobTimer.start()
+		
+		add_child(create_mob($Player.get_global_mouse_position()))
 
 func handle_pause_resume():
 	paused = not paused
@@ -40,60 +50,6 @@ func handle_hit():
 		$Music.stop()
 		$DeathSound.play()
 		$Player.destroy()
-
-var map_terrain = {
-	"water": {
-		"alt": Vector2(-1, -0.2),
-		"temp": Vector2(-1, 1),
-		"tile": 1
-	},
-	"grass": {
-		"alt": Vector2(-0.2, 0.5),
-		"temp": Vector2(-0.5, 0.4),
-		"tile": 0
-	},
-	"sand": {
-		"alt": Vector2(-0.2, 1),
-		"temp": Vector2(0.4, 1),
-		"tile": 4
-	},
-	"earth": {
-		"alt": Vector2(0.5, 1),
-		"temp": Vector2(-0.5,0.4),
-		"tile": 3
-	},
-	"ice": {
-		"alt": Vector2(-0.2, 1),
-		"temp": Vector2(-1,-0.5),
-		"tile": 2
-	}
-}
-
-var map_objs = {
-	"sand": {
-		"name": "cactus",
-		"prob": 0.005,
-		"scene": preload("res://scenes/map/Cactus.tscn")
-	},
-	"grass": {
-		"name": "tree",
-		"prob": 0.01,
-		"scene": preload("res://scenes/map/Tree.tscn")
-	},
-	"ice": {
-		"name": "snow_man",
-		"prob": 0.005,
-		"scene": preload("res://scenes/map/SnowMan.tscn")
-	}
-}
-
-var tile_id_name = {
-	0: 'grass',
-	1: 'water',
-	2: 'ice',
-	3: 'earth',
-	4: 'sand'
-}
 
 func generate_map(_seed):
 #	seed(_seed)
@@ -127,22 +83,22 @@ func set_tiles():
 			var temp = map_temp[c][l]
 			
 			var tile = 0
-			for k in map_terrain:
-				var terrain = map_terrain[k]
+			for k in ItemsData.map_terrain:
+				var terrain = ItemsData.map_terrain[k]
 				if between(alt, terrain.alt.x, terrain.alt.y) and between(temp, terrain.temp.x, terrain.temp.y):
 					tile = terrain.tile
-					if k in map_objs:
-						var obj = map_objs[k]
+					if k in ItemsData.map_objs:
+						var obj = ItemsData.map_objs[k]
 						if randf() <= obj['prob']:
 							#print(obj['name'], ': ', k)
 							var sobj = obj['scene'].instance()
-							sobj.position = pos * $TileMap.cell_size + $TileMap.position
+							sobj.position = pos * tilemap.cell_size + tilemap.position
 							#print("tile: ", k , " - ", pos, ": ", sobj.position, ", ", $TileMap.cell_size)
 							#print(sobj.position)
 							add_child(sobj)
 					break
 
-			$TileMap.set_cellv(pos, tile)
+			tilemap.set_cellv(pos, tile)
 
 func new_map(_seed):
 	seed(_seed)
@@ -161,10 +117,10 @@ func new_map(_seed):
 func start_map(_seed):
 	new_map(_seed.hash())
 	
-	var size = Vector2(height, width) * $TileMap.cell_size
-	var min_pos = $TileMap.position
-	var max_pos = size + $TileMap.position #* $TileMap.cell_size
-	print(max_pos, "-", size, "-", $TileMap.position* $TileMap.cell_size)
+	var size = Vector2(height, width) * tilemap.cell_size
+	var min_pos = tilemap.position
+	var max_pos = size + tilemap.position #* $TileMap.cell_size
+	print(max_pos, "-", size, "-", tilemap.position* tilemap.cell_size)
 	$Player.start($StartPosition.position, min_pos, max_pos)
 	started = true
 	#print(map_alt)
@@ -182,40 +138,40 @@ func new_game():
 	$HUD.update_score(score)
 	$HUD.update_lifes($Player.get_lifes())
 	$HUD.show_message("Get Ready")
-	Input.set_custom_mouse_cursor(target)
+	#Input.set_custom_mouse_cursor(target)
 	
 	start_map('3')
 	#$Music.play()
 	
 
-func create_mob():
+func create_mob(pos:Vector2):
 	# Create a new instance of the Mob scene.
 	var mob = mob_scene.instance()
-	var speed = rand_range(75.0, 150.0)
 	
-	var mob_lifes = int(score/10)
-	if mob_lifes < 2: mob_lifes = 2
-	mob.start($Player, speed, mob_lifes)
+#	var mob_lifes = int(score/10)
+#	if mob_lifes < 2: mob_lifes = 2
+#	#mob.start($Player, speed, mob_lifes)
 	
 	
-	# Choose a random location on Path2D.
-	var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
-	mob_spawn_location.offset = randi()
-
-	# Set the mob's direction perpendicular to the path direction.
-	var direction = mob_spawn_location.rotation + PI / 2
+#	# Choose a random location on Path2D.
+#	var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
+#	mob_spawn_location.offset = randi()
+#
+#	# Set the mob's direction perpendicular to the path direction.
+#	var direction = mob_spawn_location.rotation + PI / 2
 
 	# Set the mob's position to a random location.
-	mob.position = mob_spawn_location.position
+	mob.global_position = pos
+	mob.start($Player, $Navigation2D)
 	
-	var angle = rand_range(0, 360)
-	mob.position = $Player.position + Vector2(
-		cos(angle),
-		sin(angle)
-	) * 600
-	
-	# Add some randomness to the direction.
-	direction += rand_range(-PI / 4, PI / 4)
+#	var angle = rand_range(0, 360)
+#	mob.position = $Player.position + Vector2(
+#		cos(angle),
+#		sin(angle)
+#	) * 600
+#
+#	# Add some randomness to the direction.
+#	direction += rand_range(-PI / 4, PI / 4)
 	#mob.rotation = direction
 
 	# Choose the velocity for the mob.
@@ -224,11 +180,13 @@ func create_mob():
 	#mob.linear_velocity = velocity.(direction)
 
 	# Spawn the mob by adding it to the Main scene.
+	mob.scale = Vector2(0.125, 0.125)
 	return mob
 	#add_child(mob)
 
 func _on_MobTimer_timeout():
-	add_child(create_mob())
+	#add_child(create_mob())
+	pass
 
 func _on_ScoreTimer_timeout():
 	score += 1
@@ -246,9 +204,9 @@ var last_tile_id
 func _process(delta):
 	if not started: return
 	
-	var local_position = $TileMap.to_local($Player.global_position)
-	var cell = $TileMap.world_to_map(local_position)
-	var tile_id = $TileMap.get_cellv(cell)
+	var local_position = tilemap.to_local($Player.global_position)
+	var cell = tilemap.world_to_map(local_position)
+	var tile_id = tilemap.get_cellv(cell)
 	if tile_id < 0: return
 	
 	if last_tile_id != tile_id:
@@ -256,6 +214,6 @@ func _process(delta):
 		last_tile_id = tile_id
 		$Player.change_terrain({
 			'id': tile_id,
-			'name': tile_id_name[tile_id]
+			'name': ItemsData.tile_id_name[tile_id]
 		})
 	#print('TileID: ', tile_id)
