@@ -28,8 +28,8 @@ func _unhandled_input(event):
 	
 	if event is InputEventMouseButton and event.get_button_index() == BUTTON_MIDDLE and event.is_pressed():
 		#print('Add Mob, ', event.global_position)
-		if not $MobTimer.is_stopped(): return
-		$MobTimer.start()
+#		if not $MobTimer.is_stopped(): return
+#		$MobTimer.start()
 		
 		add_child(create_mob($Player.get_global_mouse_position()))
 

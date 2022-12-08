@@ -16,9 +16,9 @@ func _ready():
 	
 	UserData.start(stock_size)
 	
-	print('Add bomb: ', UserData.add_item('bomb', 3))
-	print('User bomb: ', UserData.remove_qty(1, -1, 'bomb'))
-	print('User bomb: ', UserData.remove_qty(1, -1, 'bomb'))
+#	print('Add bomb: ', UserData.add_item('bomb', 35))
+#	print('User bomb: ', UserData.remove_qty(10, -1, 'bomb'))
+#	print('User bomb: ', UserData.remove_qty(15, -1, 'bomb'))
 #	for i in range(stock_size):
 #		UserData.set_item(i, 'log', randi()%50)
 	refresh()

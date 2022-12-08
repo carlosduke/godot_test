@@ -37,6 +37,9 @@ func add_item(type: String, quantity: int):
 			quantity = 0
 		break
 	if quantity > 0 and f_empty >= 0:
+		if quantity > config['max_size']:
+			set_item(f_empty, type, config['max_size'])
+			return add_item(type, quantity - config['max_size'])
 		set_item(f_empty, type, quantity)
 		quantity = 0
 	#print('Remain: ', quantity, ', f: ', f_empty)
@@ -102,13 +105,13 @@ func remove_qty(qtd: int, idx: int = -1, _type: String = ''):
 			if items[idx]['quantity'] > qtd:
 				items[idx]['quantity'] -= qtd
 				removed['quantity'] = qtd
-				print('Removed...', removed)
+				#print('Removed...', removed)
 				return removed
 			else:
 				var released = release_item(idx)
 				removed['quantity'] += released['quantity']
 				qtd -= released['quantity']
-				print('Released..', released, ', Remain: ', qtd)
+				#print('Released..', released, ', Remain: ', qtd)
 	return null
 	
 func get_item(idx: int):
