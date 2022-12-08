@@ -1,13 +1,14 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://art/map/log.png" type="Texture" id=1]
-[ext_resource path="res://src/Log.gd" type="Script" id=2]
+[ext_resource path="res://src/items/Log.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 20.5, 17.5 )
 
 [node name="Node2D" type="StaticBody2D"]
 script = ExtResource( 2 )
+type = "log"
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

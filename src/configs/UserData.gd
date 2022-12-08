@@ -10,6 +10,8 @@ func start(size: int):
 func add_item(type: String, quantity: int):
 	var config = ItemsData.items[type]
 	var f_empty = -1
+	
+	print('Type: ', type, ', Qtd: ', quantity)
 	for idx in range(items.size()):
 		var item = items[idx]
 		if item == null and not config.stackable:
@@ -17,13 +19,15 @@ func add_item(type: String, quantity: int):
 				'type': type,
 				'quantity': quantity
 			})
+			print('Empty Slot not stackable')
 			return
 		elif item == null and f_empty < 0:
 			f_empty = idx
 			continue
 		elif item == null: continue
 		
-		if item['type'] == type and item['quantity'] == config['max_size']: continue
+		if item['type'] != type: continue
+		if item['quantity'] == config['max_size']: continue
 		item['quantity'] += quantity
 		if item['quantity'] > config['max_size']:
 			quantity = item['quantity'] - config['max_size']
@@ -35,7 +39,7 @@ func add_item(type: String, quantity: int):
 	if quantity > 0 and f_empty >= 0:
 		set_item(f_empty, type, quantity)
 		quantity = 0
-	print('Remain: ', quantity, ', f: ', f_empty)
+	#print('Remain: ', quantity, ', f: ', f_empty)
 	return quantity
 
 func is_empty(idx: int):
@@ -74,5 +78,39 @@ func release_item(idx: int):
 		items[idx] = null
 	return tmp
 
+func remove_qty(qtd: int, idx: int = -1, _type: String = ''):
+	if idx < 0 and _type == '': return null
+	if idx >= 0:
+		if items[idx]['quantity'] > qtd:
+			var removed = items[idx].duplicate()
+			items[idx]['quantity'] -= qtd
+			removed['quantity'] = qtd
+			return removed
+		else:
+			return release_item(idx)
+	
+	var removed = null
+	for idx in range(items.size()):
+		if qtd == 0:
+			return removed
+		if items[idx] == null: continue
+		if items[idx]['type'] == _type:
+			if removed == null:
+				removed = items[idx].duplicate()
+				removed['quantity'] = 0
+			
+			if items[idx]['quantity'] > qtd:
+				items[idx]['quantity'] -= qtd
+				removed['quantity'] = qtd
+				print('Removed...', removed)
+				return removed
+			else:
+				var released = release_item(idx)
+				removed['quantity'] += released['quantity']
+				qtd -= released['quantity']
+				print('Released..', released, ', Remain: ', qtd)
+	return null
+	
 func get_item(idx: int):
 	return items[idx]
+

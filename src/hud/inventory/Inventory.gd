@@ -15,6 +15,10 @@ func _ready():
 		child.connect('gui_input', self, 'slot_gui_input', [child, i])
 	
 	UserData.start(stock_size)
+	
+	print('Add bomb: ', UserData.add_item('bomb', 3))
+	print('User bomb: ', UserData.remove_qty(1, -1, 'bomb'))
+	print('User bomb: ', UserData.remove_qty(1, -1, 'bomb'))
 #	for i in range(stock_size):
 #		UserData.set_item(i, 'log', randi()%50)
 	refresh()

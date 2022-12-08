@@ -12,7 +12,6 @@ func start(quantity):
 
 func _ready():
 	set_quantity(quantity)
-	print('bomb...')
 
 func get_quantity():
 	return quantity

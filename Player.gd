@@ -84,6 +84,8 @@ func bomb(position):
 	if not $bomb_time.is_stopped():
 		return
 	$bomb_time.start()
+	if UserData.remove_qty(1, -1,'bomb') == null: return
+	
 	var b = bomb_scene.instance()
 	
 	b.set_as_toplevel(true)

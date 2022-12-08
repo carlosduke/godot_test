@@ -27,7 +27,7 @@ func _unhandled_input(event):
 		handle_pause_resume()
 	
 	if event is InputEventMouseButton and event.get_button_index() == BUTTON_MIDDLE and event.is_pressed():
-		print('Add Mob, ', event.global_position)
+		#print('Add Mob, ', event.global_position)
 		if not $MobTimer.is_stopped(): return
 		$MobTimer.start()
 		

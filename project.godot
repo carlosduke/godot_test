@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "StaticBody2D",
 "class": "DropItem",
 "language": "GDScript",
-"path": "res://src/Log.gd"
+"path": "res://src/items/DropItem.gd"
 }, {
 "base": "TextureProgress",
 "class": "HealthBar",

@@ -52,7 +52,6 @@ func apply_damage(damage: float):
 				if drop is DropItem:
 					var qtd_drop = (randi()%drop_item['max'] - drop_item['min']) + drop_item['min']
 					drop.start(qtd_drop)
-					print(drop)
 					drop.position = position
 					world.add_child(drop)
 				else:
