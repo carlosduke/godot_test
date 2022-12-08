@@ -5,7 +5,7 @@ signal hit
 
 export(PackedScene) var bullet_scene
 #export(PackedScene) var bomb_scene
-var bomb_scene = preload("res://bomb.tscn")
+var bomb_scene = preload("res://scenes/items/bomb.tscn")
 export(int) var default_lifes = 10
 export var base_speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.

@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://Mob.gd" type="Script" id=1]
+[ext_resource path="res://src/enemies/Mob.gd" type="Script" id=1]
 [ext_resource path="res://art/enemyFlyingAlt_1.png" type="Texture" id=2]
 [ext_resource path="res://art/enemyFlyingAlt_2.png" type="Texture" id=3]
 [ext_resource path="res://art/enemyWalking_1.png" type="Texture" id=4]
@@ -9,7 +9,7 @@
 [ext_resource path="res://art/enemySwimming_2.png" type="Texture" id=7]
 [ext_resource path="res://scenes/hud/HealthBar.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/hud/Path.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/items/Bomb.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/map/items/Bomb.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 35.2706

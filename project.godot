@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "StaticBody2D",
 "class": "DropItem",
 "language": "GDScript",
-"path": "res://src/items/DropItem.gd"
+"path": "res://src/map/items/DropItem.gd"
 }, {
 "base": "TextureProgress",
 "class": "HealthBar",
@@ -32,12 +32,12 @@ _global_script_classes=[ {
 "base": "BaseItem",
 "class": "Mob",
 "language": "GDScript",
-"path": "res://Mob.gd"
+"path": "res://src/enemies/Mob.gd"
 }, {
 "base": "Area2D",
 "class": "Player",
 "language": "GDScript",
-"path": "res://Player.gd"
+"path": "res://src/Player.gd"
 }, {
 "base": "TextureRect",
 "class": "SlotItem",
@@ -47,7 +47,7 @@ _global_script_classes=[ {
 "base": "Area2D",
 "class": "Weapon",
 "language": "GDScript",
-"path": "res://Weapon.gd"
+"path": "res://src/items/Weapon.gd"
 } ]
 _global_script_class_icons={
 "BaseItem": "",
@@ -70,7 +70,7 @@ This is a finished version of the game featured in the 'Your first 2D game'
 tutorial in the documentation. For more details, consider
 following the tutorial in the documentation."
 run/main_scene="res://Main.tscn"
-config/icon="res://icon.png"
+config/icon="res://art/icon.png"
 
 [autoload]
 
