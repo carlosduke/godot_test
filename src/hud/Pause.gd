@@ -12,3 +12,7 @@ func _on_Resume_pressed():
 func _on_Pause_visibility_changed():
 	if visible:
 		$Inventory.refresh()
+
+
+func _on_Button_pressed():
+	UserData.save_game()

@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1.5, 8 )
 
-[node name="Cactus" type="RigidBody2D"]
+[node name="Cactus" type="RigidBody2D" groups=["map_element", "save_data"]]
 gravity_scale = 0.0
 contact_monitor = true
 script = ExtResource( 2 )

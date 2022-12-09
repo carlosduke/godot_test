@@ -9,8 +9,6 @@ export(PackedScene) var mob_scene
 export(int) var height = 600
 export(int) var width = 600
 
-var map_alt = []
-var map_temp = []
 var started = false
 
 var score
@@ -19,9 +17,6 @@ var paused = false
 
 func _ready():
 	randomize()
-	
-	
-	$MobPath.get_curve().add_point(Vector2(0,0))
 	
 
 func _unhandled_input(event):
@@ -79,27 +74,46 @@ func generate_map(_seed):
 func between(v, _min, _max):
 	return _min <= v && v < _max
 
-func set_tiles():
+func create_map_objects():
 	for c in range(0, height):
 		for l in range(0,width):
 			var pos = Vector2(c,l)
-			var alt = map_alt[c][l]
-			var temp = map_temp[c][l]
+			var alt = UserData.get_resources().map_alt[c][l]
+			var temp = UserData.get_resources().map_temp[c][l]
 			
-			var tile = 0
 			for k in ItemsData.map_terrain:
 				var terrain = ItemsData.map_terrain[k]
 				if between(alt, terrain.alt.x, terrain.alt.y) and between(temp, terrain.temp.x, terrain.temp.y):
-					tile = terrain.tile
+					var tile = terrain.tile
 					if k in ItemsData.map_objs:
 						var obj = ItemsData.map_objs[k]
 						if randf() <= obj['prob']:
 							#print(obj['name'], ': ', k)
 							var sobj = obj['scene'].instance()
 							sobj.position = pos * tilemap.cell_size + tilemap.position
-							#print("tile: ", k , " - ", pos, ": ", sobj.position, ", ", $TileMap.cell_size)
-							#print(sobj.position)
+							#print("tile: ", k , " - ", pos, ": ", sobj.position, ", ", $Navigation2D/TileMap.cell_size)
+							#print(sobj.position, ', C: ', c, ', L: ', l)
 							add_child(sobj)
+					break
+
+func set_tiles():
+	for c in range(0, height):
+		for l in range(0,width):
+			var pos = Vector2(c,l)
+			var alt = UserData.get_resources().map_alt[c][l]
+			var temp = UserData.get_resources().map_temp[c][l]
+			
+			var tile = 0
+			for k in ItemsData.map_terrain:
+				var terrain = ItemsData.map_terrain[k]
+				if between(alt, terrain.alt.x, terrain.alt.y) and between(temp, terrain.temp.x, terrain.temp.y):
+					tile = terrain.tile
+#					if k in ItemsData.map_objs:
+#						var obj = ItemsData.map_objs[k]
+#						if randf() <= obj['prob']:
+#							var sobj = obj['scene'].instance()
+#							sobj.position = pos * tilemap.cell_size + tilemap.position
+#							add_child(sobj)
 					break
 
 			tilemap.set_cellv(pos, tile)
@@ -108,32 +122,47 @@ func new_map(_seed):
 	seed(_seed)
 	var seed_alt = randi()
 	var seed_temp = randi()
-	
-	var map_elements = get_tree().get_nodes_in_group('map_element')
-	for element in map_elements:
-		element.queue_free()
 
-	map_alt = generate_map(seed_alt)
-	map_temp = generate_map(seed_temp)
+	UserData.get_resources().map_alt = generate_map(seed_alt)
+	UserData.get_resources().map_temp = generate_map(seed_temp)
+	
 	set_tiles()
+	create_map_objects()
+	
 # Called when the node enters the scene tree for the first time.
 
 func start_map(_seed):
-	new_map(_seed.hash())
+	if not UserData.load_game():
+		new_map(_seed.hash())
+	else:
+		set_tiles()
+		for obj in UserData.get_resources().map_objects:
+			var obj_data = ItemsData.map_obj_type[obj['type']]
+			var sobj = obj_data['scene'].instance()
+			sobj.position = obj['position']
+			sobj.set_health(obj['health'])
+			sobj.set_damage(obj['damage'])
+			add_child(sobj)
 	
 	var size = Vector2(height, width) * tilemap.cell_size
 	var min_pos = tilemap.position
 	var max_pos = size + tilemap.position #* $TileMap.cell_size
 	print(max_pos, "-", size, "-", tilemap.position* tilemap.cell_size)
-	$Player.start($StartPosition.position, min_pos, max_pos)
+	
+	var load_player_data = UserData.get_resources().player_data
+	if load_player_data != null:
+		$Player.start(load_player_data['position'], min_pos, max_pos)
+	else:
+		$Player.start($StartPosition.position, min_pos, max_pos)	
 	started = true
 	#print(map_alt)
 	#$Player.show()
 	
-
 func new_game():
 	#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	get_tree().call_group("mobs", "queue_free")
+	get_tree().call_group("map_element", "queue_free")
+	
 	score = 0
 	
 	$Player.start($StartPosition.position, $StartMap.position, $EndMap.position)
@@ -143,9 +172,10 @@ func new_game():
 	$HUD.update_lifes($Player.get_lifes())
 	$HUD.show_message("Get Ready")
 	#Input.set_custom_mouse_cursor(target)
-	
+
 	start_map('3')
-	#$Music.play()
+	
+
 	
 
 func create_mob(pos:Vector2):

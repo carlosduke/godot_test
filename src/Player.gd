@@ -91,7 +91,7 @@ func control_movement(delta: float):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 #		print(position)
-	
+
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()

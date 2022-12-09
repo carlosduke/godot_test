@@ -17,5 +17,13 @@ margin_right = 450.0
 margin_bottom = 72.0
 text = "Pausa"
 
+[node name="Button" type="Button" parent="."]
+margin_left = 463.0
+margin_top = 52.0
+margin_right = 504.0
+margin_bottom = 72.0
+text = "Save"
+
 [connection signal="visibility_changed" from="." to="." method="_on_Pause_visibility_changed"]
 [connection signal="pressed" from="Resume" to="." method="_on_Resume_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

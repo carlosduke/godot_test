@@ -2,6 +2,7 @@ extends BaseItem
 
 func _ready():
 	set_health_bar($HealthBar)
+	set_type('cactus')
 
 
 func _on_Cactus_body_entered(body):

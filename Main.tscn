@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://scenes/enemies/Mob.tscn" type="PackedScene" id=2]
@@ -10,11 +10,6 @@
 [ext_resource path="res://scenes/hud/Pause.tscn" type="PackedScene" id=8]
 [ext_resource path="res://art/map/map.png" type="Texture" id=9]
 [ext_resource path="res://scenes/hud/debug/Debug.tscn" type="PackedScene" id=10]
-
-[sub_resource type="Curve2D" id=1]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -1411, -658, 0, 0, 0, 0, 2426, -663, 0, 0, 0, 0, 2426, 1496, 0, 0, 0, 0, -1417, 1504, 0, 0, 0, 0, -1417, -658 )
-}
 
 [sub_resource type="NavigationPolygon" id=3]
 vertices = PoolVector2Array( 8, 8, 0, 8, 0, 0, 8, 0 )
@@ -144,14 +139,6 @@ one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
 position = Vector2( 506, 413 )
-
-[node name="MobPath" type="Path2D" parent="."]
-visible = false
-curve = SubResource( 1 )
-
-[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
-position = Vector2( -1411, -658 )
-rotation = -0.00130776
 
 [node name="HUD" parent="." instance=ExtResource( 4 )]
 

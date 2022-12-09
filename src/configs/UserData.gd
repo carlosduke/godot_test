@@ -1,17 +1,61 @@
 extends Node
 
+var resources: Resources
 var items = []
+var file_save: String = 'res://saves/save.tres'
+
+func _ready():
+	resources = Resources.new()
 
 func start(size: int):
 	items.clear()
-	for i in range(size):
+	for _i in range(size):
 		items.append(null)
 
+func get_resources():
+	return resources	
+
+
+
+## ------------------------------------- SAVE DATA ------------------------------------ ##
+func load_game() -> bool:
+	if ResourceLoader.exists(file_save):
+		var res = ResourceLoader.load(file_save)
+		if res is Resources:
+			resources = res
+			return true
+	return false
+
+func save_game() -> bool:
+	var res = get_resources()
+	res.map_objects.clear()
+	for obj in get_tree().get_nodes_in_group('save_data'):
+		if obj is BaseItem:
+			res.map_objects.append({
+				'type': obj.get_type(),
+				'position': obj.position,
+				'health': obj.get_health(),
+				'damage': obj.get_damage(),
+			})
+		elif obj is Player:
+			res.player_data = {
+				'position': obj.position
+			}
+		
+	
+	var status = ResourceSaver.save(file_save, res)
+	print(status)
+	return status == OK
+
+## ------------------------------------- SAVE DATA ------------------------------------ ##
+
+## ------------------------------------- INVENTORY ------------------------------------ ##
 func add_item(type: String, quantity: int):
 	var config = ItemsData.items[type]
+	if config == null: return
 	var f_empty = -1
 	
-	print('Type: ', type, ', Qtd: ', quantity)
+	#print('Type: ', type, ', Qtd: ', quantity)
 	for idx in range(items.size()):
 		var item = items[idx]
 		if item == null and not config.stackable:
@@ -116,4 +160,4 @@ func remove_qty(qtd: int, idx: int = -1, _type: String = ''):
 	
 func get_item(idx: int):
 	return items[idx]
-
+## ------------------------------------- INVENTORY ------------------------------------ ##

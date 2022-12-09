@@ -43,21 +43,35 @@ var map_terrain = {
 	}
 }
 
+
+var map_obj_type = {
+	'tree': {
+		"scene": preload("res://scenes/map/Tree.tscn")
+	},
+	'cactus': {
+		"scene": preload("res://scenes/map/Cactus.tscn")
+	},
+	'snow_man': {
+		"scene": preload("res://scenes/map/SnowMan.tscn")
+	}
+}
+
+
 var map_objs = {
 	"sand": {
 		"name": "cactus",
 		"prob": 0.005,
-		"scene": preload("res://scenes/map/Cactus.tscn")
+		'scene': map_obj_type['cactus']['scene']
 	},
 	"grass": {
 		"name": "tree",
 		"prob": 0.01,
-		"scene": preload("res://scenes/map/Tree.tscn")
+		'scene': map_obj_type['tree']['scene']
 	},
 	"ice": {
 		"name": "snow_man",
 		"prob": 0.005,
-		"scene": preload("res://scenes/map/SnowMan.tscn")
+		'scene': map_obj_type['snow_man']['scene']
 	}
 }
 

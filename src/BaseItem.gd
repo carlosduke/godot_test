@@ -8,8 +8,16 @@ signal killed
 var health_bar: HealthBar
 var health
 var damage: float
-var drop_items = []
 
+var drop_items = []
+export var type: String
+
+
+func set_type(type):
+	self.type =  type
+
+func get_type():
+	return type
 
 func get_health():
 	return health
@@ -61,3 +69,6 @@ func apply_damage(damage: float):
 
 func get_damage():
 	return damage
+
+func set_damage(damage):
+	self.damage = damage
