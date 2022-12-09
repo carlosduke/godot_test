@@ -27,6 +27,13 @@ func load_game() -> bool:
 	return false
 
 func save_game() -> bool:
+	var d = Directory.new()
+	if( !d.dir_exists('res://saves') ):
+		var err = d.make_dir_recursive('res://saves')
+		if err != OK:
+			print('Error to create dir saves: ', err)
+			return false
+	
 	var res = get_resources()
 	res.map_objects.clear()
 	for obj in get_tree().get_nodes_in_group('save_data'):

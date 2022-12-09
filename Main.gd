@@ -150,7 +150,7 @@ func start_map(_seed):
 	print(max_pos, "-", size, "-", tilemap.position* tilemap.cell_size)
 	
 	var load_player_data = UserData.get_resources().player_data
-	if load_player_data != null:
+	if not load_player_data.empty():
 		$Player.start(load_player_data['position'], min_pos, max_pos)
 	else:
 		$Player.start($StartPosition.position, min_pos, max_pos)	
