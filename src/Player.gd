@@ -48,55 +48,21 @@ func _ready():
 	
 	hide()
 
-func _input(event):
+func _unhandled_input(event):
 	if not started: return
 	if event is InputEventMouseMotion:
 		mouse_pos = event.global_position
 	if event is InputEventMouseButton and event.is_pressed():
 		var direction = (mouse_pos - position).normalized()
 		###shoot(direction)
-	#pass
+	
+	# Zoom control...
 	if event.is_action("zoom_in"):
 		zoom(-zoom_size)
 	if event.is_action("zoom_out"):
 		zoom(zoom_size)
 
-
-func shoot(tmp):
-	if not started: return
-	if not $shoot_time.is_stopped():
-		return
-	
-	#print("player: ", $shoot_start.get_global_transform_with_canvas().get_origin())
-	#print("mouse: ", mouse_pos)
-	$shoot_time.start()
-	var bullet = bullet_scene.instance()
-	#bullet.start(get_position())
-	#bullet.position = Vector2(0, 0)
-	
-	bullet.global_position = $shoot_start.global_position
-	bullet.set_as_toplevel(true)
-	var velocity = $shoot_start.get_global_transform_with_canvas().get_origin().direction_to(mouse_pos)
-	bullet.start(velocity, startMap, endMap)
-	add_child(bullet)
-	
-func bomb(position):
-	if not $bomb_time.is_stopped():
-		return
-	$bomb_time.start()
-	if UserData.remove_qty(1, -1,'bomb') == null: return
-	
-	var b = bomb_scene.instance()
-	
-	b.set_as_toplevel(true)
-	b.position.x = position[0]
-	b.position.y= position[1]
-	b.bomb(1,1)
-	add_child(b)
-
-func _process(delta):
-	if not started: return
-	
+func control_movement(delta: float):
 	var velocity = Vector2.ZERO # The player's movement vector.
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
@@ -144,6 +110,45 @@ func _process(delta):
 	elif velocity.y != 0:
 		$AnimatedSprite.animation = "up"
 		$AnimatedSprite.flip_v = velocity.y > 0
+
+
+func shoot(tmp):
+	if not started: return
+	if not $shoot_time.is_stopped():
+		return
+	
+	#print("player: ", $shoot_start.get_global_transform_with_canvas().get_origin())
+	#print("mouse: ", mouse_pos)
+	$shoot_time.start()
+	var bullet = bullet_scene.instance()
+	#bullet.start(get_position())
+	#bullet.position = Vector2(0, 0)
+	
+	bullet.global_position = $shoot_start.global_position
+	bullet.set_as_toplevel(true)
+	var velocity = $shoot_start.get_global_transform_with_canvas().get_origin().direction_to(mouse_pos)
+	bullet.start(velocity, startMap, endMap)
+	add_child(bullet)
+	
+func bomb(position):
+	if not $bomb_time.is_stopped():
+		return
+	$bomb_time.start()
+	if UserData.remove_qty(1, -1,'bomb') == null: return
+	
+	var b = bomb_scene.instance()
+	
+	b.set_as_toplevel(true)
+	b.position.x = position[0]
+	b.position.y= position[1]
+	b.bomb(1,1)
+	add_child(b)
+
+func _process(delta):
+	if not started: return
+	
+	control_movement(delta)
+	
 
 func change_terrain(terrain):
 #	Struct:

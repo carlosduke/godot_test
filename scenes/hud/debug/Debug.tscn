@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/hud/debug/Console.gd" type="Script" id=1]
+
+[node name="Debug" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="Console" type="Node2D" parent="."]
+
+[node name="Log" type="TextEdit" parent="Console"]
+margin_top = 388.0
+margin_right = 616.0
+margin_bottom = 743.0
+readonly = true
+
+[node name="LineEdit" type="LineEdit" parent="Console"]
+margin_top = 744.0
+margin_right = 617.0
+margin_bottom = 768.0
+
+[node name="GameStatus" type="Label" parent="."]
+margin_left = 829.0
+margin_top = 1.0
+margin_right = 1024.0
+margin_bottom = 109.0
+text = "FPS: "
+
+[connection signal="handle_display" from="." to="." method="_on_Debug_handle_display"]
+[connection signal="text_entered" from="Console/LineEdit" to="." method="_on_LineEdit_text_entered"]

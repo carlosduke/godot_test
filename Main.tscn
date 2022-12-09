@@ -9,7 +9,7 @@
 [ext_resource path="res://art/wp2754864.jpg" type="Texture" id=7]
 [ext_resource path="res://scenes/hud/Pause.tscn" type="PackedScene" id=8]
 [ext_resource path="res://art/map/map.png" type="Texture" id=9]
-[ext_resource path="res://scenes/hud/debug/Console.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/hud/debug/Debug.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Curve2D" id=1]
 _data = {

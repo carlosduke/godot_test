@@ -1,6 +1,8 @@
 extends Node
 
 onready var tilemap = $Navigation2D/TileMap
+onready var debug = $Debug
+
 var base_path = preload("res://scenes/hud/Path.tscn")
 
 export(PackedScene) var mob_scene 
@@ -32,6 +34,8 @@ func _unhandled_input(event):
 #		$MobTimer.start()
 		
 		add_child(create_mob($Player.get_global_mouse_position()))
+	if event.is_action_pressed("ui_debug"):
+		debug.emit_signal('handle_display')
 
 func handle_pause_resume():
 	paused = not paused
