@@ -25,25 +25,34 @@ func get_resources():
 
 ## ------------------------------------- TIME DATA ------------------------------------ ##
 func tick(_hours: int):
-	var time	= resources.get('time')
+	var p_time	= resources.get('time').duplicate()
 	
-	var years	= time['years']
-	var months	= time['months']
-	var days	= time['days']
-	var hours	= time['hours']
+	var years	= p_time['years']
+	var months	= p_time['months']
+	var days	= p_time['days']
+	var hours	= p_time['hours']
 	
 	hours += _hours
 	days += int(hours/24)
 	months += int(days/30)
 	years += int(months/12)
 	
+	var time = resources.get('time')
 	time['years']	= years
 	time['months']	= months%12
 	time['days']	= days%30
 	time['hours']	= hours%24
 	
 	#resources.set('time', time)
-	self.log(['Hour passed: ', time])
+	#self.log(['Hour passed: ', time])
+	get_tree().call_group(
+		'time',
+		'time_tick',
+		time['years']	!= p_time['years'], 
+		time['months']	!= p_time['months'], 
+		time['days']	!= p_time['days'],
+		time['hours']	!= p_time['hours']
+	)
 
 func get_date():
 	var time	= resources.get('time').duplicate()
@@ -61,6 +70,7 @@ func log(args):
 	if debug_scene != null:
 		debug_scene.emit_signal('log_message', msg)
 	#emit_signal('log_message', text)
+	print(args)
 
 func set_debug(_debug_scene):
 	debug_scene = _debug_scene

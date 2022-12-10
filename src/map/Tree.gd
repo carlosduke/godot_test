@@ -1,3 +1,4 @@
+class_name TreeMap
 extends BaseItem
 
 export(PackedScene) var log_scene
@@ -6,4 +7,4 @@ export(PackedScene) var log_scene
 func _ready():
 	set_health_bar($HealthBar)
 	set_type('tree')
-	add_drop(0.9, log_scene, 'log', 10, 50)
+	add_drop(0.9, log_scene, 'log', 2, 5)

@@ -168,6 +168,9 @@ func start_game(newgame: bool):
 
 	start_map(str(randi()), newgame)
 
+func add_mob(pos: Vector2):
+	add_child(create_mob(pos))
+
 func create_mob(pos:Vector2):
 	var mob = mob_scene.instance()
 	mob.global_position = pos

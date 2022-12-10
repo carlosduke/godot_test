@@ -168,9 +168,9 @@ func zoom(zoom_size):
 
 
 func _on_Player_body_entered(_body):
-	if _body is BaseItem:
-		health = clamp(health - _body.get_damage(), 0, base_health)
-		$HealthBar.set_health(health)
+#	if _body is BaseItem:
+#		health = clamp(health - _body.get_damage(), 0, base_health)
+#		$HealthBar.set_health(health)
 	if _body is DropItem:
 		var remain = UserData.add_item(_body.get_type(), _body.get_quantity())
 		_body.set_quantity(remain)

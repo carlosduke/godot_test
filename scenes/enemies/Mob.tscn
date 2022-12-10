@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://src/enemies/Mob.gd" type="Script" id=1]
 [ext_resource path="res://art/enemyFlyingAlt_1.png" type="Texture" id=2]
@@ -33,9 +33,12 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 93.0591
+radius = 199.424
 
-[node name="Mob" type="RigidBody2D" groups=["mobs", "save_data"]]
+[sub_resource type="CircleShape2D" id=4]
+radius = 9.0
+
+[node name="Mob" type="RigidBody2D" groups=["mobs", "save_data", "time"]]
 collision_mask = 0
 mode = 2
 mass = 0.00102041
@@ -71,9 +74,19 @@ rect_scale = Vector2( 0.05, 0.05 )
 [node name="PathTimer" type="Timer" parent="."]
 
 [node name="ViewArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ViewArea"]
 shape = SubResource( 3 )
+
+[node name="DamageArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+shape = SubResource( 4 )
+
+[node name="DamageTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
 
 [connection signal="body_entered" from="." to="." method="_on_Mob_body_entered"]
 [connection signal="body_shape_entered" from="." to="." method="_on_Mob_body_shape_entered"]
@@ -81,3 +94,7 @@ shape = SubResource( 3 )
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="timeout" from="PathTimer" to="." method="_on_PathTimer_timeout"]
 [connection signal="body_entered" from="ViewArea" to="." method="_on_ViewArea_body_entered"]
+[connection signal="body_exited" from="ViewArea" to="." method="_on_ViewArea_body_exited"]
+[connection signal="body_entered" from="DamageArea" to="." method="_on_DamageArea_body_entered"]
+[connection signal="body_exited" from="DamageArea" to="." method="_on_DamageArea_body_exited"]
+[connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]
