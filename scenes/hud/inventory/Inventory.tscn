@@ -155,3 +155,5 @@ margin_left = 500.0
 margin_top = 300.0
 margin_right = 600.0
 margin_bottom = 400.0
+
+[connection signal="visibility_changed" from="." to="." method="_on_Inventory_visibility_changed"]

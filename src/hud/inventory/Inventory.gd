@@ -68,3 +68,7 @@ func slot_gui_input(event: InputEvent, slot: SlotItem, index: int):
 func _input(event):
 	if event is InputEventMouseMotion and is_holding():
 		holding_item.global_position = event.global_position
+
+
+func _on_Inventory_visibility_changed():
+	refresh()

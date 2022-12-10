@@ -1,6 +1,9 @@
 extends CanvasLayer
 
 signal start_game (newgame)
+signal handle_inventory
+
+onready var inventory = $Inventory
 
 func show_message(text):
 	$MessageLabel.text = text
@@ -22,6 +25,10 @@ func update_score(score):
 	
 func update_lifes(life):
 	$ScoreLifes.text = str(life)
+	
+func handle_inventory():
+	inventory.visible = !inventory.visible
+
 
 
 func _on_StartButton_pressed():
@@ -36,3 +43,6 @@ func _on_MessageTimer_timeout():
 func _on_ContinueGame_pressed():
 	$Buttons.hide()
 	emit_signal("start_game", false)
+
+func _on_HUD_handle_inventory():
+	handle_inventory()
