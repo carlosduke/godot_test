@@ -40,15 +40,25 @@ float crosx(vec2 st, float size) {
 }
 
 void fragment() {
+	vec2 u_resolution = 1.0/SCREEN_PIXEL_SIZE;
+	vec2 st = 6.0 * FRAGCOORD.xy/u_resolution;
 	
-	vec2 st = UV;
-	st.y = 1.0-st.y;
 	vec3 color = vec3(0.0);
-	vec2 translate = vec2(cos(TIME), sin(-TIME));
-	st += translate*0.35;
 	
-	color = vec3(st.x,st.y,0.0);
-	color += vec3(crosx(st, 0.25));
+	for (int i = 1; i <= 8; i++){
+		float v = float(i);
+		st += vec2(
+			0.7 / v * sin(st.y + TIME + 0.3) + 0.8,
+			0.3 / v * cos(st.x + TIME + 0.3) + 0.16
+		);
+	}
+	
+	
+	color = vec3(
+		0.5 * sin(st.x) + 0.5,
+		0.5 * sin(st.y) + 0.5,
+		sin(st.x + st.y)
+	);
 	
 	
 	COLOR = vec4(color, 1.0);
