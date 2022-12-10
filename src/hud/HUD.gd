@@ -2,8 +2,10 @@ extends CanvasLayer
 
 signal start_game (newgame)
 signal handle_inventory
+signal time_tick
 
 onready var inventory = $Inventory
+onready var lbl_time = $Time
 
 func show_message(text):
 	$MessageLabel.text = text
@@ -46,3 +48,9 @@ func _on_ContinueGame_pressed():
 
 func _on_HUD_handle_inventory():
 	handle_inventory()
+
+
+func _on_HUD_time_tick():
+	var time = UserData.get_date()
+	UserData.log(' tick hud')
+	$Time.text = 'Ano: %d\nMes: %d\nDia: %d\nHora: %d' % [time['years'], time['months'], time['days'], time['hours']]

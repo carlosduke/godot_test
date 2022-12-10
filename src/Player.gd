@@ -73,12 +73,8 @@ func control_movement(delta: float):
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
 	
-	if Input.is_action_pressed("ui_accept"):
-		#shoot(1)
-		pass
-	
-	if Input.is_mouse_button_pressed(1):
-		shoot(1)
+	if Input.is_mouse_button_pressed(BUTTON_LEFT):
+		shoot()
 	if Input.is_mouse_button_pressed(BUTTON_RIGHT):
 		bomb(get_global_mouse_position())	
 	
@@ -90,7 +86,6 @@ func control_movement(delta: float):
 			speed += speed_change
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
-#		print(position)
 
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
@@ -98,7 +93,6 @@ func control_movement(delta: float):
 	else:
 		$AnimatedSprite.stop()
 
-	#print(position)
 	position += velocity * delta
 	position.x = clamp(position.x, startMap.x, endMap.x)
 	position.y = clamp(position.y, startMap.y, endMap.y)
@@ -112,17 +106,13 @@ func control_movement(delta: float):
 		$AnimatedSprite.flip_v = velocity.y > 0
 
 
-func shoot(tmp):
+func shoot():
 	if not started: return
 	if not $shoot_time.is_stopped():
 		return
 	
-	#print("player: ", $shoot_start.get_global_transform_with_canvas().get_origin())
-	#print("mouse: ", mouse_pos)
 	$shoot_time.start()
 	var bullet = bullet_scene.instance()
-	#bullet.start(get_position())
-	#bullet.position = Vector2(0, 0)
 	
 	bullet.global_position = $shoot_start.global_position
 	bullet.set_as_toplevel(true)
@@ -151,12 +141,6 @@ func _process(delta):
 	
 
 func change_terrain(terrain):
-#	Struct:
-#	{
-#		'id': tile_id,
-#		'name': 'tile_name'
-#	}
-#	print(terrain)
 	current_terrain = terrain
 
 
@@ -179,29 +163,18 @@ func start(pos, sm, em):
 	
 func zoom(zoom_size):
 	$Camera.zoom += zoom_size
-	$Camera.zoom.x = clamp($Camera.zoom.x, 0.4, 10)
-	$Camera.zoom.y = clamp($Camera.zoom.y, 0.4, 10)
+	$Camera.zoom.x = clamp($Camera.zoom.x, 0.4, 2)
+	$Camera.zoom.y = clamp($Camera.zoom.y, 0.4, 2)
 
 
 func _on_Player_body_entered(_body):
-	#_body.rola()
-#	if lifes > 0: lifes -= 1
-#	else: return
-#
-#	#print("cur size: ", size_lifes * lifes)
-#	$LifeHud.points[1][0] = size_lifes * lifes
-#	_body.kill()
-#
-#	emit_signal("hit")
 	if _body is BaseItem:
 		health = clamp(health - _body.get_damage(), 0, base_health)
 		$HealthBar.set_health(health)
 	if _body is DropItem:
 		var remain = UserData.add_item(_body.get_type(), _body.get_quantity())
 		_body.set_quantity(remain)
-		
-	pass
-	
+
 func destroy():
 	hide()
 	started = false	

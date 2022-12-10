@@ -6,7 +6,13 @@ export var save_data = {
 	'map_temp': [],
 	'map_objects': [],
 	'player_data': {},
-	'items_inventory': []
+	'items_inventory': [],
+	'time': {
+		'years': 0,
+		'months': 0,
+		'days': 0,
+		'hours': 0
+	}
 }
 
 func get(key: String):

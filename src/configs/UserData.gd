@@ -2,6 +2,8 @@ extends Node
 
 var resources: Resources
 var file_save: String = 'res://saves/save.tres'
+var debug_scene: DebugConsole
+
 
 func _ready():
 	resources = Resources.new()
@@ -20,6 +22,49 @@ func get_resources():
 	return resources	
 
 
+
+## ------------------------------------- TIME DATA ------------------------------------ ##
+func tick(_hours: int):
+	var time	= resources.get('time')
+	
+	var years	= time['years']
+	var months	= time['months']
+	var days	= time['days']
+	var hours	= time['hours']
+	
+	hours += _hours
+	days += int(hours/24)
+	months += int(days/30)
+	years += int(months/12)
+	
+	time['years']	= years
+	time['months']	= months%12
+	time['days']	= days%30
+	time['hours']	= hours%24
+	
+	#resources.set('time', time)
+	self.log(['Hour passed: ', time])
+
+func get_date():
+	var time	= resources.get('time').duplicate()
+	return time
+## ------------------------------------- TIME DATA ------------------------------------ ##
+
+## ------------------------------------- LOG DATA ------------------------------------- ##
+func log(args):
+	var msg = ''
+	if not args is String:
+		for arg in args:
+			msg += ' ' + str(arg)
+	else:
+		msg = args
+	if debug_scene != null:
+		debug_scene.emit_signal('log_message', msg)
+	#emit_signal('log_message', text)
+
+func set_debug(_debug_scene):
+	debug_scene = _debug_scene
+## ------------------------------------- LOG DATA ------------------------------------- ##
 
 ## ------------------------------------- SAVE DATA ------------------------------------ ##
 func load_game() -> bool:

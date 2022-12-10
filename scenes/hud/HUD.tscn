@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/hud/inventory/Inventory.tscn" type="PackedScene" id=3]
 
 [sub_resource type="DynamicFont" id=1]
-size = 64
+size = 60
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=2]
@@ -36,6 +36,13 @@ margin_bottom = 78.0
 custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 1
+
+[node name="Time" type="Label" parent="."]
+anchor_right = 1.0
+margin_top = 98.0
+margin_right = -291.0
+margin_bottom = 176.0
+text = "asdfa"
 
 [node name="MessageLabel" type="Label" parent="."]
 anchor_top = 0.5
@@ -80,6 +87,7 @@ text = "Continuar"
 visible = false
 
 [connection signal="handle_inventory" from="." to="." method="_on_HUD_handle_inventory"]
+[connection signal="time_tick" from="." to="." method="_on_HUD_time_tick"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
 [connection signal="pressed" from="Buttons/NewGame" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="Buttons/ContinueGame" to="." method="_on_ContinueGame_pressed"]

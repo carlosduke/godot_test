@@ -46,7 +46,6 @@ func _physics_process(delta):
 		if d > 2:
 			var velocity = position.direction_to(points[i]) * speed * delta
 			linear_velocity = velocity
-			#print(i, ': ', d, ' - ', linear_velocity)
 			break
 		else:
 			path.remove_point(0)
@@ -75,5 +74,5 @@ func _on_PathTimer_timeout():
 func _on_ViewArea_body_entered(body):
 	if body is Player:
 		target = body
-		print('New Target: ', body)
+		UserData.log(['New Target: ', body])
 	

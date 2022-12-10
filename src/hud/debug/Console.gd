@@ -1,9 +1,14 @@
+class_name DebugConsole
 extends CanvasLayer
 
 onready var log_data = $Console/Log
 onready var console = $Console
 onready var game_status = $GameStatus
 signal handle_display
+signal log_message (message)
+
+func _ready():
+	UserData.set_debug(self)
 
 func _on_LineEdit_text_entered(new_text):
 	handle_command(new_text)
@@ -36,5 +41,5 @@ func handle_command(cmd: String):
 				UserData.add_item(parts[1], int(parts[2]))
 	_log(cmd)
 
-
-
+func _on_Debug_log_message(message):
+	_log(message)

@@ -27,4 +27,5 @@ margin_bottom = 109.0
 text = "FPS: "
 
 [connection signal="handle_display" from="." to="." method="_on_Debug_handle_display"]
+[connection signal="log_message" from="." to="." method="_on_Debug_log_message"]
 [connection signal="text_entered" from="Console/LineEdit" to="." method="_on_LineEdit_text_entered"]

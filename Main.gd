@@ -25,10 +25,6 @@ func _unhandled_input(event):
 		handle_pause_resume()
 	
 	if event is InputEventMouseButton and event.get_button_index() == BUTTON_MIDDLE and event.is_pressed():
-		#print('Add Mob, ', event.global_position)
-#		if not $MobTimer.is_stopped(): return
-#		$MobTimer.start()
-		
 		add_child(create_mob($Player.get_global_mouse_position()))
 	if event.is_action_pressed("ui_debug"):
 		debug.emit_signal('handle_display')
@@ -67,11 +63,8 @@ func generate_map(_seed):
 	for c in range(0,height):
 		map.append([])
 		for l in range(0,width):
-			#var n = rng.randi()
-			#var alt = rng.randf_range(0,1)
 			var noise_v = noise.get_noise_2d(c,l)
 			map[c].append(noise_v)
-			#print(alt, ', ', tmp)
 			
 	return map
 
@@ -92,11 +85,8 @@ func create_map_objects():
 					if k in ItemsData.map_objs:
 						var obj = ItemsData.map_objs[k]
 						if randf() <= obj['prob']:
-							#print(obj['name'], ': ', k)
 							var sobj = obj['scene'].instance()
 							sobj.position = pos * tilemap.cell_size + tilemap.position
-							#print("tile: ", k , " - ", pos, ": ", sobj.position, ", ", $Navigation2D/TileMap.cell_size)
-							#print(sobj.position, ', C: ', c, ', L: ', l)
 							add_child(sobj)
 					break
 
@@ -154,7 +144,7 @@ func start_map(_seed, newgame: bool):
 	var size = Vector2(height, width) * tilemap.cell_size
 	var min_pos = tilemap.position
 	var max_pos = size + tilemap.position #* $TileMap.cell_size
-	print(max_pos, "-", size, "-", tilemap.position* tilemap.cell_size)
+	UserData.log([max_pos, "-", size, "-", tilemap.position * tilemap.cell_size])
 	
 	var load_player_data = UserData.get_resources().get('player_data')
 	if not load_player_data.empty():
@@ -162,8 +152,6 @@ func start_map(_seed, newgame: bool):
 	else:
 		$Player.start($StartPosition.position, min_pos, max_pos)	
 	started = true
-	#print(map_alt)
-	#$Player.show()
 	
 func start_game(newgame: bool):
 	#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -203,7 +191,7 @@ func _on_MobTimer_timeout():
 			rand_range(min_pos.y, max_pos.y)
 		)
 		add_child(create_mob(pos))
-		print('New Mob Created: ', pos)
+		UserData.log(['New Mob Created: ', pos])
 	pass
 
 func _on_ScoreTimer_timeout():
@@ -213,6 +201,7 @@ func _on_ScoreTimer_timeout():
 func _on_StartTimer_timeout():
 #	$MobTimer.start()
 #	$ScoreTimer.start()
+	$HourTimer.start()
 	pass
 
 func _on_Pause_resume_game():
@@ -228,10 +217,13 @@ func _process(delta):
 	if tile_id < 0: return
 	
 	if last_tile_id != tile_id:
-		#print('Player: ', $Player.global_position, ', Cell: ', cell, ', ID: ', tile_id)
 		last_tile_id = tile_id
 		$Player.change_terrain({
 			'id': tile_id,
 			'name': ItemsData.tile_id_name[tile_id]
 		})
-	#print('TileID: ', tile_id)
+
+
+func _on_HourTimer_timeout():
+	UserData.tick(1)
+	$HUD.emit_signal('time_tick')
