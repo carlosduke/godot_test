@@ -37,19 +37,6 @@ func start(nav, path):
 	self.path = path
 
 func _process(delta):
-#	#if navigation == null: return
-#	var dir_player = position.direction_to(player.position)
-#	#var cur_velocity = linear_velocity
-#	#print("process: ", dir_player)
-#	var velocity = position.direction_to(player.position) * speed * delta
-#	linear_velocity = velocity
-#	if path == null:
-#		path = navigation.get_simple_path(position, player.global_position, true)
-#		$Line2D.points = path
-#	var path = navigation.get_simple_path(position, player.global_position, true)
-#	self.path.points = path
-	#print('mob: ', position, 'player: ', player.position, 'lines: ', $Line2D.position)
-	#$Line2D.points = path
 	pass
 
 func _physics_process(delta):
