@@ -10,7 +10,7 @@ export(float) var max_dist
 
 func _ready():
 	set_health_bar($HealthBar)
-	speed = rand_range(200.0, 400.0)
+	speed = rand_range(400.0, 800.0)
 	
 	add_drop(0.7, bomb_scene, 'bomb', 1, 7)
 	

@@ -129,7 +129,7 @@ scale = Vector2( 0.125, 0.125 )
 default_lifes = 1
 
 [node name="MobTimer" type="Timer" parent="."]
-one_shot = true
+wait_time = 0.5
 
 [node name="ScoreTimer" type="Timer" parent="."]
 

@@ -78,8 +78,8 @@ func create_map_objects():
 	for c in range(0, height):
 		for l in range(0,width):
 			var pos = Vector2(c,l)
-			var alt = UserData.get_resources().map_alt[c][l]
-			var temp = UserData.get_resources().map_temp[c][l]
+			var alt = UserData.get_resources().get('map_alt')[c][l]
+			var temp = UserData.get_resources().get('map_temp')[c][l]
 			
 			for k in ItemsData.map_terrain:
 				var terrain = ItemsData.map_terrain[k]
@@ -100,8 +100,8 @@ func set_tiles():
 	for c in range(0, height):
 		for l in range(0,width):
 			var pos = Vector2(c,l)
-			var alt = UserData.get_resources().map_alt[c][l]
-			var temp = UserData.get_resources().map_temp[c][l]
+			var alt = UserData.get_resources().get('map_alt')[c][l]
+			var temp = UserData.get_resources().get('map_temp')[c][l]
 			
 			var tile = 0
 			for k in ItemsData.map_terrain:
@@ -123,8 +123,8 @@ func new_map(_seed):
 	var seed_alt = randi()
 	var seed_temp = randi()
 
-	UserData.get_resources().map_alt = generate_map(seed_alt)
-	UserData.get_resources().map_temp = generate_map(seed_temp)
+	UserData.get_resources().set('map_alt', generate_map(seed_alt))
+	UserData.get_resources().set('map_temp', generate_map(seed_temp))
 	
 	set_tiles()
 	create_map_objects()
@@ -136,7 +136,10 @@ func start_map(_seed, newgame: bool):
 		new_map(_seed.hash())
 	else:
 		set_tiles()
-		for obj in UserData.get_resources().map_objects:
+		for obj in UserData.get_resources().get('map_objects'):
+			if obj['type'] == 'mob': #TODO: melhorar, ta uma merda
+				add_child(create_mob(obj['position']))
+				continue
 			var obj_data = ItemsData.map_obj_type[obj['type']]
 			var sobj = obj_data['scene'].instance()
 			sobj.position = obj['position']
@@ -149,7 +152,7 @@ func start_map(_seed, newgame: bool):
 	var max_pos = size + tilemap.position #* $TileMap.cell_size
 	print(max_pos, "-", size, "-", tilemap.position* tilemap.cell_size)
 	
-	var load_player_data = UserData.get_resources().player_data
+	var load_player_data = UserData.get_resources().get('player_data')
 	if not load_player_data.empty():
 		$Player.start(load_player_data['position'], min_pos, max_pos)
 	else:
@@ -174,22 +177,7 @@ func start_game(newgame: bool):
 	start_map(str(randi()), newgame)
 
 func create_mob(pos:Vector2):
-	# Create a new instance of the Mob scene.
 	var mob = mob_scene.instance()
-	
-#	var mob_lifes = int(score/10)
-#	if mob_lifes < 2: mob_lifes = 2
-#	#mob.start($Player, speed, mob_lifes)
-	
-	
-#	# Choose a random location on Path2D.
-#	var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
-#	mob_spawn_location.offset = randi()
-#
-#	# Set the mob's direction perpendicular to the path direction.
-#	var direction = mob_spawn_location.rotation + PI / 2
-
-	# Set the mob's position to a random location.
 	mob.global_position = pos
 	var path_mob = base_path.instance()
 	path_mob.global_position = Vector2(0.0,0.0)
@@ -197,29 +185,21 @@ func create_mob(pos:Vector2):
 	
 	mob.start($Navigation2D, path_mob)
 	mob.connect('tree_exiting', path_mob, 'queue_free')
-	
-#	var angle = rand_range(0, 360)
-#	mob.position = $Player.position + Vector2(
-#		cos(angle),
-#		sin(angle)
-#	) * 600
-#
-#	# Add some randomness to the direction.
-#	direction += rand_range(-PI / 4, PI / 4)
-	#mob.rotation = direction
-
-	# Choose the velocity for the mob.
-	#var velocity = Vector2(rand_range(150.0, 250.0), 0.0)
-	
-	#mob.linear_velocity = velocity.(direction)
-
-	# Spawn the mob by adding it to the Main scene.
 	mob.scale = Vector2(0.125, 0.125)
 	return mob
-	#add_child(mob)
 
 func _on_MobTimer_timeout():
-	#add_child(create_mob())
+	var prob_mob = 0.1
+	if randf() < prob_mob:
+		var size = Vector2(height, width) * tilemap.cell_size
+		var min_pos = tilemap.position
+		var max_pos = size + tilemap.position #* $TileMap.cell_size
+		var pos = Vector2(
+			rand_range(min_pos.x, max_pos.x),
+			rand_range(min_pos.y, max_pos.y)
+		)
+		add_child(create_mob(pos))
+		print('New Mob Created: ', pos)
 	pass
 
 func _on_ScoreTimer_timeout():
@@ -227,7 +207,7 @@ func _on_ScoreTimer_timeout():
 	$HUD.update_score(score)
 
 func _on_StartTimer_timeout():
-#	$MobTimer.start()
+	$MobTimer.start()
 #	$ScoreTimer.start()
 	pass
 

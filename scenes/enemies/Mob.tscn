@@ -35,7 +35,7 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=3]
 radius = 93.0591
 
-[node name="Mob" type="RigidBody2D" groups=["mobs"]]
+[node name="Mob" type="RigidBody2D" groups=["mobs", "save_data"]]
 collision_mask = 0
 mode = 2
 mass = 0.00102041
@@ -45,6 +45,7 @@ __meta__ = {
 "_edit_group_": true
 }
 base_damage = 2.0
+type = "mob"
 bomb_scene = ExtResource( 10 )
 max_dist = 150.0
 

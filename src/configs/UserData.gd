@@ -1,16 +1,20 @@
 extends Node
 
 var resources: Resources
-var items = []
 var file_save: String = 'res://saves/save.tres'
 
 func _ready():
 	resources = Resources.new()
 
 func start(size: int):
-	items.clear()
+	print('start user data')
+	if(resources.get('items_inventory').size() > 0):
+		print('load inventory...')
+		return #TODO: melhorar load game
+	print('init inventory')
+	resources.get('items_inventory').clear()
 	for _i in range(size):
-		items.append(null)
+		resources.get('items_inventory').append(null)
 
 func get_resources():
 	return resources	
@@ -35,19 +39,24 @@ func save_game() -> bool:
 			return false
 	
 	var res = get_resources()
-	res.map_objects.clear()
+	#print('Inventory to save: ', res.get('items_inventory').size(), ', map_objects: ', res.get('map_objects').size())
+	
+	res.get('map_objects').clear()
+	#print('Inventory to save2: ', res.get('items_inventory').size(), ', map_objects: ', res.get('map_objects').size())
+	
 	for obj in get_tree().get_nodes_in_group('save_data'):
 		if obj is BaseItem:
-			res.map_objects.append({
+			res.get('map_objects').append({
 				'type': obj.get_type(),
 				'position': obj.position,
 				'health': obj.get_health(),
 				'damage': obj.get_damage(),
 			})
+			pass
 		elif obj is Player:
-			res.player_data = {
+			res.set('player_data', {
 				'position': obj.position
-			}
+			})
 		
 	
 	var status = ResourceSaver.save(file_save, res)
@@ -63,8 +72,8 @@ func add_item(type: String, quantity: int):
 	var f_empty = -1
 	
 	#print('Type: ', type, ', Qtd: ', quantity)
-	for idx in range(items.size()):
-		var item = items[idx]
+	for idx in range(resources.get('items_inventory').size()):
+		var item = resources.get('items_inventory')[idx]
 		if item == null and not config.stackable:
 			set_item_data(idx, {
 				'type': type,
@@ -97,17 +106,17 @@ func add_item(type: String, quantity: int):
 	return quantity
 
 func is_empty(idx: int):
-	return items[idx] == null
+	return resources.get('items_inventory')[idx] == null
 
 func set_item_data(idx: int, item):
 	return set_item(idx, item['type'], item['quantity'])
 	
 func set_item(idx: int, _type: String, _quantity: int):
-	if idx < 0 || idx >= items.size():
+	if idx < 0 || idx >= resources.get('items_inventory').size():
 		print('Invalid index: ', idx)
 		return
 	var config = ItemsData.items[_type]
-	var previous_item = items[idx]
+	var previous_item = resources.get('items_inventory')[idx]
 	
 	var item = {
 		'type': _type,
@@ -123,38 +132,38 @@ func set_item(idx: int, _type: String, _quantity: int):
 		else:
 			previous_item = null
 	
-	items[idx] = item
+	resources.get('items_inventory')[idx] = item
 	return previous_item
 
 func release_item(idx: int):
-	var tmp = items[idx]
+	var tmp = resources.get('items_inventory')[idx]
 	if not is_empty(idx):
-		items[idx] = null
+		resources.get('items_inventory')[idx] = null
 	return tmp
 
 func remove_qty(qtd: int, idx: int = -1, _type: String = ''):
 	if idx < 0 and _type == '': return null
 	if idx >= 0:
-		if items[idx]['quantity'] > qtd:
-			var removed = items[idx].duplicate()
-			items[idx]['quantity'] -= qtd
+		if resources.get('items_inventory')[idx]['quantity'] > qtd:
+			var removed = resources.get('items_inventory')[idx].duplicate()
+			resources.get('items_inventory')[idx]['quantity'] -= qtd
 			removed['quantity'] = qtd
 			return removed
 		else:
 			return release_item(idx)
 	
 	var removed = null
-	for idx in range(items.size()):
+	for idx in range(resources.get('items_inventory').size()):
 		if qtd == 0:
 			return removed
-		if items[idx] == null: continue
-		if items[idx]['type'] == _type:
+		if resources.get('items_inventory')[idx] == null: continue
+		if resources.get('items_inventory')[idx]['type'] == _type:
 			if removed == null:
-				removed = items[idx].duplicate()
+				removed = resources.get('items_inventory')[idx].duplicate()
 				removed['quantity'] = 0
 			
-			if items[idx]['quantity'] > qtd:
-				items[idx]['quantity'] -= qtd
+			if resources.get('items_inventory')[idx]['quantity'] > qtd:
+				resources.get('items_inventory')[idx]['quantity'] -= qtd
 				removed['quantity'] = qtd
 				#print('Removed...', removed)
 				return removed
@@ -166,5 +175,6 @@ func remove_qty(qtd: int, idx: int = -1, _type: String = ''):
 	return null
 	
 func get_item(idx: int):
-	return items[idx]
+	#print(resources.get('items_inventory'))
+	return resources.get('items_inventory')[idx]
 ## ------------------------------------- INVENTORY ------------------------------------ ##
