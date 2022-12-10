@@ -1,5 +1,5 @@
 class_name Player
-extends Area2D
+extends KinematicBody2D
 
 signal hit
 

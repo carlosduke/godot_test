@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-signal start_game
+signal start_game (newgame)
 
 func show_message(text):
 	$MessageLabel.text = text
@@ -25,9 +25,14 @@ func update_lifes(life):
 
 
 func _on_StartButton_pressed():
-	$StartButton.hide()
-	emit_signal("start_game")
+	$Buttons.hide()
+	emit_signal("start_game", true)
 
 
 func _on_MessageTimer_timeout():
 	$MessageLabel.hide()
+
+
+func _on_ContinueGame_pressed():
+	$Buttons.hide()
+	emit_signal("start_game", false)

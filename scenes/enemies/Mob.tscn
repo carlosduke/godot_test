@@ -8,7 +8,6 @@
 [ext_resource path="res://art/enemySwimming_1.png" type="Texture" id=6]
 [ext_resource path="res://art/enemySwimming_2.png" type="Texture" id=7]
 [ext_resource path="res://scenes/hud/HealthBar.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/hud/Path.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/map/items/Bomb.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CapsuleShape2D" id=2]
@@ -33,6 +32,9 @@ animations = [ {
 "speed": 4.0
 } ]
 
+[sub_resource type="CircleShape2D" id=3]
+radius = 93.0591
+
 [node name="Mob" type="RigidBody2D" groups=["mobs"]]
 collision_mask = 0
 mode = 2
@@ -44,6 +46,7 @@ __meta__ = {
 }
 base_damage = 2.0
 bomb_scene = ExtResource( 10 )
+max_dist = 150.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
@@ -64,13 +67,16 @@ margin_right = 585.0
 margin_bottom = 85.0
 rect_scale = Vector2( 0.05, 0.05 )
 
-[node name="Line2D" parent="." instance=ExtResource( 9 )]
-visible = false
-
 [node name="PathTimer" type="Timer" parent="."]
+
+[node name="ViewArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ViewArea"]
+shape = SubResource( 3 )
 
 [connection signal="body_entered" from="." to="." method="_on_Mob_body_entered"]
 [connection signal="body_shape_entered" from="." to="." method="_on_Mob_body_shape_entered"]
 [connection signal="killed" from="." to="." method="_on_Mob_killed"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="timeout" from="PathTimer" to="." method="_on_PathTimer_timeout"]
+[connection signal="body_entered" from="ViewArea" to="." method="_on_ViewArea_body_entered"]

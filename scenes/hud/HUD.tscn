@@ -47,21 +47,34 @@ text = "Dodge the
 Creeps"
 align = 1
 
-[node name="StartButton" type="Button" parent="."]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -90.0
-margin_top = -200.0
-margin_right = 90.0
-margin_bottom = -100.0
-custom_fonts/font = SubResource( 2 )
-shortcut = SubResource( 4 )
-text = "Start"
-
 [node name="MessageTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
+[node name="Buttons" type="VBoxContainer" parent="."]
+margin_left = 237.0
+margin_top = 497.0
+margin_right = 786.0
+margin_bottom = 669.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="NewGame" type="Button" parent="Buttons"]
+margin_right = 549.0
+margin_bottom = 84.0
+custom_fonts/font = SubResource( 2 )
+shortcut = SubResource( 4 )
+text = "Novo Jogo"
+
+[node name="ContinueGame" type="Button" parent="Buttons"]
+margin_top = 104.0
+margin_right = 549.0
+margin_bottom = 188.0
+custom_fonts/font = SubResource( 2 )
+shortcut = SubResource( 4 )
+text = "Continuar"
+
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
+[connection signal="pressed" from="Buttons/NewGame" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="Buttons/ContinueGame" to="." method="_on_ContinueGame_pressed"]

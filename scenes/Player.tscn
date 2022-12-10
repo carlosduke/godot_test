@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://src/Player.gd" type="Script" id=1]
 [ext_resource path="res://art/playerGrey_walk1.png" type="Texture" id=2]
@@ -47,7 +47,10 @@ scale = 0.75
 scale_curve = SubResource( 6 )
 color_ramp = SubResource( 4 )
 
-[node name="Player" type="Area2D" groups=["save_data"]]
+[sub_resource type="CircleShape2D" id=8]
+radius = 34.0588
+
+[node name="Player" type="KinematicBody2D" groups=["save_data"]]
 position = Vector2( 4, 1 )
 z_index = 10
 script = ExtResource( 1 )
@@ -95,4 +98,9 @@ margin_right = 566.0
 margin_bottom = 46.0
 rect_scale = Vector2( 0.1, 0.1 )
 
-[connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
+[node name="GrapArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrapArea"]
+shape = SubResource( 8 )
+
+[connection signal="body_entered" from="GrapArea" to="." method="_on_Player_body_entered"]

@@ -131,8 +131,8 @@ func new_map(_seed):
 	
 # Called when the node enters the scene tree for the first time.
 
-func start_map(_seed):
-	if not UserData.load_game():
+func start_map(_seed, newgame: bool):
+	if newgame or not UserData.load_game():
 		new_map(_seed.hash())
 	else:
 		set_tiles()
@@ -158,14 +158,12 @@ func start_map(_seed):
 	#print(map_alt)
 	#$Player.show()
 	
-func new_game():
+func start_game(newgame: bool):
 	#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	get_tree().call_group("mobs", "queue_free")
 	get_tree().call_group("map_element", "queue_free")
 	
 	score = 0
-	
-	$Player.start($StartPosition.position, $StartMap.position, $EndMap.position)
 	
 	$StartTimer.start()
 	$HUD.update_score(score)
@@ -173,10 +171,7 @@ func new_game():
 	$HUD.show_message("Get Ready")
 	#Input.set_custom_mouse_cursor(target)
 
-	start_map('3')
-	
-
-	
+	start_map(str(randi()), newgame)
 
 func create_mob(pos:Vector2):
 	# Create a new instance of the Mob scene.
@@ -196,7 +191,12 @@ func create_mob(pos:Vector2):
 
 	# Set the mob's position to a random location.
 	mob.global_position = pos
-	mob.start($Player, $Navigation2D)
+	var path_mob = base_path.instance()
+	path_mob.global_position = Vector2(0.0,0.0)
+	add_child(path_mob)
+	
+	mob.start($Navigation2D, path_mob)
+	mob.connect('tree_exiting', path_mob, 'queue_free')
 	
 #	var angle = rand_range(0, 360)
 #	mob.position = $Player.position + Vector2(

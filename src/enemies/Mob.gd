@@ -1,14 +1,14 @@
 class_name Mob
 extends BaseItem
 
-var player
+var target
 var speed
 var navigation
-onready var path = $Line2D
+var path
 export(PackedScene) var bomb_scene
+export(float) var max_dist
 
 func _ready():
-	path.position = Vector2(0,0) - position #TODO: melhorar a implementação do path
 	set_health_bar($HealthBar)
 	speed = rand_range(200.0, 400.0)
 	
@@ -22,13 +22,19 @@ func _ready():
 	find_path()
 
 func find_path():
-	var path = navigation.get_simple_path(position, player.global_position, true)
-	self.path.points = path
+	if target != null:
+		var dist = global_position.distance_to(target.global_position)
+		if dist > max_dist:
+			target = null
+			self.path.clear_points()
+			linear_velocity = Vector2(0.0, 0.0)
+			return
+		var path = navigation.get_simple_path(position, target.global_position, true)
+		self.path.points = path
 
-func start(player, nav):
+func start(nav, path):
 	navigation = nav
-	self.player = player
-	#self.path = path
+	self.path = path
 
 func _process(delta):
 #	#if navigation == null: return
@@ -77,3 +83,10 @@ func _on_Mob_killed():
 
 func _on_PathTimer_timeout():
 	find_path()
+
+
+func _on_ViewArea_body_entered(body):
+	if body is Player:
+		target = body
+		print('New Target: ', body)
+	
