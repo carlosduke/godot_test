@@ -98,12 +98,11 @@ func apply_health(_health: float):
 	if health_bar:
 		health_bar.set_health(health)
 
-func add_age(days: int):
-	status.add_age(days)
+func add_age(hours: int):
+	status.add_age(hours)
 
-#Converter age para horas
 func get_age(type: int) -> float:
-	return float(status.age_days)
+	return float(UserData.cast_date(type, status.age_hours))
 
 func get_damage():
 	return damage

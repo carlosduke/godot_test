@@ -65,6 +65,20 @@ func date_cast(type: int) -> Dictionary:
 
 	return {'year': 0.0, 'monts': 0.0, 'days': 0.0, 'hours': 0.0}
 
+func cast_date(type: int, hours: int):
+	var cast = date_cast(type)
+	if type == UserData.AGE_TYPES.YEAR:
+		return int(cast['years'] * hours)
+	
+	if type == UserData.AGE_TYPES.MONTH:
+		return int(cast['months'] * hours)
+	
+	if type == UserData.AGE_TYPES.DAY:
+		return int(cast['days'] * hours)
+	
+	if type == UserData.AGE_TYPES.HOUR:
+		return hours
+	return 0
 
 func tick(_hours: int):
 	var to_cast = date_cast(AGE_TYPES.HOURS)
@@ -96,7 +110,7 @@ func tick(_hours: int):
 		n_years - years,
 		n_months - months,
 		n_days - days,
-		n_hours - _hours
+		_hours
 	)
 
 func get_date():

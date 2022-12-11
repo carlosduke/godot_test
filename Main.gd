@@ -71,6 +71,11 @@ func generate_map(_seed):
 func between(v, _min, _max):
 	return _min <= v && v < _max
 
+func add_map_object(type: String, pos: Vector2):
+	var obj_instance = ItemsData.map_obj_type[type]['scene'].instance()
+	obj_instance.position = pos
+	add_child(obj_instance)
+
 func create_map_objects():
 	for c in range(0, height):
 		for l in range(0,width):
@@ -85,9 +90,10 @@ func create_map_objects():
 					if k in ItemsData.map_objs:
 						var obj = ItemsData.map_objs[k]
 						if randf() <= obj['prob']:
-							var sobj = obj['scene'].instance()
-							sobj.position = pos * tilemap.cell_size + tilemap.position
-							add_child(sobj)
+							add_map_object(obj['name'], pos * tilemap.cell_size + tilemap.position)
+#							var sobj = obj['scene'].instance()
+#							sobj.position = pos * tilemap.cell_size + tilemap.position
+#							add_child(sobj)
 					break
 
 func set_tiles():
