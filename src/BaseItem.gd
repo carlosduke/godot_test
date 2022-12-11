@@ -6,12 +6,22 @@ export(float) var base_damage = 0.0
 signal killed
 
 var health_bar: HealthBar
+
+var lifeStatusBase = preload("res://src/life/LifeStatus.gd")
+var status: LifeStatus
 var health
 var damage: float
 
 var drop_items = []
 export var type: String
 
+func _ready():
+	set_health(base_health)
+	damage = base_damage
+	status = lifeStatusBase.new()
+	
+func get_status():
+	return status
 
 func set_type(type):
 	self.type =  type
@@ -40,10 +50,6 @@ func add_drop(chance: float, scene: PackedScene, type: String, _min: int, _max: 
 		'min': _min,
 		'max': _max
 	})
-
-func _ready():
-	set_health(base_health)
-	damage = base_damage
 
 func apply_damage(damage: float):
 	health = clamp(health - damage, 0, base_health)

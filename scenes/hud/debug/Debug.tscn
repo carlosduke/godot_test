@@ -9,7 +9,7 @@ script = ExtResource( 1 )
 visible = false
 
 [node name="Log" type="TextEdit" parent="Console"]
-margin_top = 388.0
+margin_top = 581.0
 margin_right = 616.0
 margin_bottom = 743.0
 readonly = true

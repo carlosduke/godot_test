@@ -38,17 +38,17 @@ func handle_pause_resume():
 	$Pause.visible = paused
 
 func handle_hit():
-	$HUD.update_lifes($Player.get_lifes())
-	if $Player.get_lifes() == 0:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		
-		Input.set_custom_mouse_cursor(null)
-		$ScoreTimer.stop()
-		$MobTimer.stop()
-		$HUD.show_game_over()
-		$Music.stop()
-		$DeathSound.play()
-		$Player.destroy()
+#	$HUD.update_lifes($Player.get_lifes())
+#	if $Player.get_lifes() == 0:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	Input.set_custom_mouse_cursor(null)
+	$ScoreTimer.stop()
+	$MobTimer.stop()
+	$HUD.show_game_over()
+	$Music.stop()
+	$DeathSound.play()
+	$Player.destroy()
 
 func generate_map(_seed):
 #	seed(_seed)

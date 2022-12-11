@@ -23,6 +23,9 @@ func display_status():
 	var status = ''
 	status += 'FPS: %d\n' % Performance.get_monitor(Performance.TIME_FPS)
 	status += 'Objects: %d\n' % Performance.get_monitor(Performance.OBJECT_COUNT)
+	status += 'Mobs: %d\n' % get_tree().get_nodes_in_group('mobs').size()
+	status += 'Trees: %d\n' % get_tree().get_nodes_in_group('tree').size()
+	
 	
 	game_status.text = status
 

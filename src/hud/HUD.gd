@@ -19,7 +19,7 @@ func show_game_over():
 	$MessageLabel.text = "Dodge the\nCreeps"
 	$MessageLabel.show()
 	yield(get_tree().create_timer(1), "timeout")
-	$StartButton.show()
+	$Buttons.show()
 
 
 func update_score(score):

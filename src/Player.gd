@@ -181,3 +181,15 @@ func destroy():
 
 func get_lifes():
 	return lifes
+
+func set_health(health):
+	self.health = health
+	$HealthBar.set_health(health)
+	if health <= 0:
+		UserData.log(['New Dead...', health])
+		emit_signal('hit') #TODO: mudar nome do sinal
+	
+func apply_damage(damage):
+	if not started: return
+	set_health(clamp(self.health - damage, 0, self.health))
+	
