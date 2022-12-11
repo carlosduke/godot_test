@@ -105,7 +105,7 @@ func _on_ViewArea_body_entered(body):
 
 	
 func time_tick(year_chaged: bool, month_change: bool, day_changed: bool, hour_changed: bool):
-	UserData.log(['Update mob...', get_rid(), ', Hungry: ', hungry])
+	#UserData.log(['Update mob...', get_rid(), ', Hungry: ', hungry])
 	if day_changed and hungry < 50:
 		UserData.log(['Create new mob...', hungry])
 		var new_pos = get_global_position()
