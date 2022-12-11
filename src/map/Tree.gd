@@ -4,7 +4,7 @@ extends BaseItem
 export(PackedScene) var log_scene
 var next_trees = []
 
-const DAY_NEW_TREE: int = 1
+const DAY_NEW_TREE: int = 7
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +19,6 @@ func time_tick(year_chaged: int, month_change: int, day_changed: int, hour_chang
 	if get_health() < base_health or next_trees.size() >= 5: return
 	
 	if day_changed > 0 and get_age(UserData.AGE_TYPES.DAY) >= DAY_NEW_TREE:
-		print('add three')
 		var world = get_tree().get_current_scene()
 		var angle = randf() * 360
 		var new_pos = global_position

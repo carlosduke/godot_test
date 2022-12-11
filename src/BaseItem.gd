@@ -33,7 +33,7 @@ func save_data():
 func load(data):
 	position = data['position']
 	self.status = data['status']
-	UserData.log([status.health])
+	#UserData.log([status.health])
 
 func get_status():
 	return status

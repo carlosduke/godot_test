@@ -36,33 +36,5 @@ rect_scale = Vector2( 0.02, 0.02 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FlorestArea"]
 shape = SubResource( 2 )
 
-[node name="Label" type="Label" parent="."]
-margin_left = 15.0
-margin_top = -7.0
-margin_right = 39.0
-margin_bottom = 7.0
-text = "rola"
-
-[node name="Label2" type="Label" parent="."]
-margin_left = -12.0
-margin_top = -29.0
-margin_right = 12.0
-margin_bottom = -15.0
-text = "rola"
-
-[node name="Label3" type="Label" parent="."]
-margin_left = -39.0
-margin_top = -7.0
-margin_right = -15.0
-margin_bottom = 7.0
-text = "rola"
-
-[node name="Label4" type="Label" parent="."]
-margin_left = -12.0
-margin_top = 15.0
-margin_right = 12.0
-margin_bottom = 29.0
-text = "rola"
-
 [connection signal="body_entered" from="FlorestArea" to="." method="_on_FlorestArea_body_entered"]
 [connection signal="body_exited" from="FlorestArea" to="." method="_on_FlorestArea_body_exited"]

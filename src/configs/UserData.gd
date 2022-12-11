@@ -96,12 +96,12 @@ func tick(_hours: int):
 	
 	resources.set('time', n_hours)
 	
-	UserData.log([
-		'Year: ', n_years,
-		', Months: ', n_months,
-		', Days: ', n_days,
-		', Hours: ', _hours
-	])
+#	UserData.log([
+#		'Year: ', n_years,
+#		', Months: ', n_months,
+#		', Days: ', n_days,
+#		', Hours: ', _hours
+#	])
 	
 	#Para futura melhorar de performance não processar items distantes do player...
 	get_tree().call_group(
