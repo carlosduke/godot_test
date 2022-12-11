@@ -163,8 +163,8 @@ func start(pos, sm, em):
 	
 func zoom(zoom_size):
 	$Camera.zoom += zoom_size
-	$Camera.zoom.x = clamp($Camera.zoom.x, 0.4, 2)
-	$Camera.zoom.y = clamp($Camera.zoom.y, 0.4, 2)
+	$Camera.zoom.x = clamp($Camera.zoom.x, 0.2, 2)
+	$Camera.zoom.y = clamp($Camera.zoom.y, 0.2, 2)
 
 
 func _on_Player_body_entered(_body):

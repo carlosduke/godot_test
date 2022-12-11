@@ -48,10 +48,10 @@ func tick(_hours: int):
 	get_tree().call_group(
 		'time',
 		'time_tick',
-		time['years']	!= p_time['years'], 
-		time['months']	!= p_time['months'], 
-		time['days']	!= p_time['days'],
-		time['hours']	!= p_time['hours']
+		time['years']	- p_time['years'], 
+		time['months']	- p_time['months'], 
+		time['days']	- p_time['days'],
+		_hours
 	)
 
 func get_date():
@@ -64,13 +64,13 @@ func log(args):
 	var msg = ''
 	if not args is String:
 		for arg in args:
-			msg += ' ' + str(arg)
+			msg += str(arg)
 	else:
 		msg = args
 	if debug_scene != null:
 		debug_scene.emit_signal('log_message', msg)
 	#emit_signal('log_message', text)
-	print(args)
+	print(msg)
 
 func set_debug(_debug_scene):
 	debug_scene = _debug_scene
@@ -82,8 +82,22 @@ func load_game() -> bool:
 		var res = ResourceLoader.load(file_save)
 		if res is Resources:
 			resources = res
+			
+			load_objects(res)
 			return true
 	return false
+
+func load_objects(res: Resources) -> void:
+	#Load map objects and mobs
+	var world = get_tree().get_current_scene()
+	var line = world.get_node('Line2D')
+	for obj in res.get('map_objects'):
+		var obj_instance = ItemsData.map_obj_type[obj['type']]['scene'].instance()
+		obj_instance.load(obj)
+		world.add_child(obj_instance)
+		#print(obj['type'], obj_instance, 'position: ', obj['position'])
+		#break
+	
 
 func save_game() -> bool:
 	var d = Directory.new()
@@ -101,13 +115,7 @@ func save_game() -> bool:
 	
 	for obj in get_tree().get_nodes_in_group('save_data'):
 		if obj is BaseItem:
-			res.get('map_objects').append({
-				'type': obj.get_type(),
-				'position': obj.position,
-				'health': obj.get_health(),
-				'damage': obj.get_damage(),
-			})
-			pass
+			res.get('map_objects').append(obj.save_data())
 		elif obj is Player:
 			res.set('player_data', {
 				'position': obj.position

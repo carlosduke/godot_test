@@ -1,8 +1,8 @@
 class_name LifeStatus
 
-var age_days: int
-var hungry: int
-var health: float
+export var age_days: int
+export var hungry: int
+export var health: float
 
 func start(hungry: int, health: float):
 	self.hungry = hungry

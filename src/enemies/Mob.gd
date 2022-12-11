@@ -74,7 +74,6 @@ func find_path():
 			new_pos.x += sin(angle) * 100
 			new_pos.y += cos(angle) * 100
 			self.path.points = navigation.get_simple_path(global_position, new_pos, true)
-		
 
 func start(nav, path):
 	navigation = nav
@@ -102,7 +101,8 @@ func _on_Mob_killed():
 	path.queue_free()
 
 func _on_PathTimer_timeout():
-	find_path()
+#	find_path()
+	pass
 
 func _on_ViewArea_body_entered(body):
 	if body is Player:
@@ -116,8 +116,9 @@ func _on_ViewArea_body_entered(body):
 
 
 #Retornar quantidade alterada...
-func time_tick(year_chaged: bool, month_change: bool, day_changed: bool, hour_changed: bool):
+func time_tick(year_chaged: int, month_change: int, day_changed: int, hour_changed: int) -> void:
 	#UserData.log(['Update mob...', get_rid(), ', Hungry: ', hungry])
+	get_status().hungry += 2
 	if day_changed and get_status().hungry < 50:
 		UserData.log(['Create new mob...', get_status().hungry])
 		var new_pos = get_global_position()
@@ -128,8 +129,11 @@ func time_tick(year_chaged: bool, month_change: bool, day_changed: bool, hour_ch
 		get_tree().get_current_scene().add_mob(new_pos)
 		get_status().hungry += 50
 		
-	if day_changed:
-		get_status().add_age(1)
+	if day_changed > 0:
+		get_status().add_age(day_changed)
+	
+	if get_status().hungry >= 50:
+		apply_damage(1)
 	pass
 
 

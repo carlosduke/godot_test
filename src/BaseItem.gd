@@ -9,17 +9,30 @@ var health_bar: HealthBar
 
 var lifeStatusBase = preload("res://src/life/LifeStatus.gd")
 var status: LifeStatus
-var health
 var damage: float
 
 var drop_items = []
 export var type: String
 
 func _ready():
-	set_health(base_health)
 	damage = base_damage
-	status = lifeStatusBase.new()
-	
+	if status == null:
+		status = lifeStatusBase.new()
+	set_health(get_health())
+
+func save_data():
+	return {
+		'type': type,
+		'position': position,
+		'damage': damage,
+		'status': status
+	}
+
+func load(data):
+	position = data['position']
+	self.status = data['status']
+	UserData.log([status.health])
+
 func get_status():
 	return status
 
@@ -30,17 +43,18 @@ func get_type():
 	return type
 
 func get_health():
-	return health
+	return status.health
 
 func get_base_health():
 	return base_health
 
 func set_health(_health):
-	health = _health
+	status.health = _health
 
 func set_health_bar(bar: HealthBar):
 	health_bar = bar
 	bar.start(base_health)
+	bar.set_health(status.health)
 
 func add_drop(chance: float, scene: PackedScene, type: String, _min: int, _max: int):
 	drop_items.append({
@@ -52,7 +66,9 @@ func add_drop(chance: float, scene: PackedScene, type: String, _min: int, _max: 
 	})
 
 func apply_damage(damage: float):
-	health = clamp(health - damage, 0, base_health)
+	var health = clamp(status.health - damage, 0, base_health)
+	status.health = health
+	UserData.log(['damage: ', damage, ', Health: ', health, ', Base: ', base_health])
 	if health_bar:
 		health_bar.set_health(health)
 
@@ -72,6 +88,13 @@ func apply_damage(damage: float):
 					drop.queue_free()
 		emit_signal('killed')
 		queue_free()
+
+func apply_health(_health: float):
+	var health = clamp(status.health + _health, status.health, base_health)
+	status.health = health
+	#UserData.log(['Health: ', _health, ', status: ', status.health, ', base: ', base_health])
+	if health_bar:
+		health_bar.set_health(health)
 
 func get_damage():
 	return damage

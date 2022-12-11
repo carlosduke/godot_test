@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://scenes/enemies/Mob.tscn" type="PackedScene" id=2]
@@ -10,16 +10,11 @@
 [ext_resource path="res://scenes/hud/Pause.tscn" type="PackedScene" id=8]
 [ext_resource path="res://art/map/map.png" type="Texture" id=9]
 [ext_resource path="res://scenes/hud/debug/Debug.tscn" type="PackedScene" id=10]
-[ext_resource path="res://shaders/Tree.gdshader" type="Shader" id=11]
 
 [sub_resource type="NavigationPolygon" id=8]
 vertices = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 outlines = [ PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 ) ]
-
-[sub_resource type="ShaderMaterial" id=7]
-shader = ExtResource( 11 )
-shader_param/mouse_position = null
 
 [sub_resource type="NavigationPolygon" id=9]
 vertices = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -55,7 +50,6 @@ outlines = [ PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 ) ]
 1/name = "map.png 1"
 1/texture = ExtResource( 9 )
 1/tex_offset = Vector2( 0, 0 )
-1/material = SubResource( 7 )
 1/modulate = Color( 1, 1, 1, 1 )
 1/region = Rect2( 16, 0, 16, 16 )
 1/tile_mode = 0
@@ -185,6 +179,9 @@ bake_navigation = true
 format = 1
 
 [node name="Debug" parent="." instance=ExtResource( 10 )]
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
 
 [connection signal="hit" from="Player" to="." method="handle_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]

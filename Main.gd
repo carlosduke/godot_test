@@ -102,12 +102,6 @@ func set_tiles():
 				var terrain = ItemsData.map_terrain[k]
 				if between(alt, terrain.alt.x, terrain.alt.y) and between(temp, terrain.temp.x, terrain.temp.y):
 					tile = terrain.tile
-#					if k in ItemsData.map_objs:
-#						var obj = ItemsData.map_objs[k]
-#						if randf() <= obj['prob']:
-#							var sobj = obj['scene'].instance()
-#							sobj.position = pos * tilemap.cell_size + tilemap.position
-#							add_child(sobj)
 					break
 
 			tilemap.set_cellv(pos, tile)
@@ -130,16 +124,16 @@ func start_map(_seed, newgame: bool):
 		new_map(_seed.hash())
 	else:
 		set_tiles()
-		for obj in UserData.get_resources().get('map_objects'):
-			if obj['type'] == 'mob': #TODO: melhorar, ta uma merda
-				add_child(create_mob(obj['position']))
-				continue
-			var obj_data = ItemsData.map_obj_type[obj['type']]
-			var sobj = obj_data['scene'].instance()
-			sobj.position = obj['position']
-			sobj.set_health(obj['health'])
-			sobj.set_damage(obj['damage'])
-			add_child(sobj)
+#		for obj in UserData.get_resources().get('map_objects'):
+#			if obj['type'] == 'mob': #TODO: melhorar, ta uma merda
+#				add_child(create_mob(obj['position']))
+#				continue
+#			var obj_data = ItemsData.map_obj_type[obj['type']]
+#			var sobj = obj_data['scene'].instance()
+#			sobj.position = obj['position']
+#			sobj.set_health(obj['health'])
+#			sobj.set_damage(obj['damage'])
+#			add_child(sobj)
 	
 	var size = Vector2(height, width) * tilemap.cell_size
 	var min_pos = tilemap.position

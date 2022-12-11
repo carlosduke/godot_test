@@ -24,7 +24,17 @@ func display_status():
 	status += 'FPS: %d\n' % Performance.get_monitor(Performance.TIME_FPS)
 	status += 'Objects: %d\n' % Performance.get_monitor(Performance.OBJECT_COUNT)
 	status += 'Mobs: %d\n' % get_tree().get_nodes_in_group('mobs').size()
-	status += 'Trees: %d\n' % get_tree().get_nodes_in_group('tree').size()
+	
+	var map_elements = get_tree().get_nodes_in_group('map_element')
+	var objs = {}
+	for me in map_elements:
+		var type = me['type']
+		if not type in objs:
+			
+			objs[type] = []
+		objs[type].append(me)
+	status += 'Trees: %d\n' %  (objs['tree'].size() if 'tree' in objs else 0)
+	status += 'Cactus: %d\n' %  (objs['cactus'].size() if 'cactus' in objs else 0)
 	
 	
 	game_status.text = status
