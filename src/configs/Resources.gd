@@ -7,12 +7,7 @@ export var save_data = {
 	'map_objects': [],
 	'player_data': {},
 	'items_inventory': [],
-	'time': {
-		'years': 0,
-		'months': 0,
-		'days': 0,
-		'hours': 0
-	}
+	'time': 0					#Horas do jogo passadas
 }
 
 func get(key: String):

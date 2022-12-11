@@ -52,5 +52,12 @@ func _on_HUD_handle_inventory():
 
 func _on_HUD_time_tick():
 	var time = UserData.get_date()
+	var to_cast = UserData.date_cast(UserData.AGE_TYPES.HOURS)
 	#UserData.log(' tick hud')
-	$Time.text = 'Ano: %d\nMes: %d\nDia: %d\nHora: %d' % [time['years'], time['months'], time['days'], time['hours']]
+	$Time.text = 'Ano: %d\nMes: %d\nDia: %d\nHora: %d' % [
+		int(to_cast['years'] * time),
+		int(to_cast['months'] * time)%12,
+		int(to_cast['days'] * time)%30,
+		int(to_cast['hours'] * time)%24
+	]
+	#$Time.text = 'Hora: %d' % [time]

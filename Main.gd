@@ -134,7 +134,6 @@ func start_map(_seed, newgame: bool):
 #			sobj.set_health(obj['health'])
 #			sobj.set_damage(obj['damage'])
 #			add_child(sobj)
-	
 	var size = Vector2(height, width) * tilemap.cell_size
 	var min_pos = tilemap.position
 	var max_pos = size + tilemap.position #* $TileMap.cell_size

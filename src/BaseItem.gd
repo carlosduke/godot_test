@@ -18,6 +18,8 @@ func _ready():
 	damage = base_damage
 	if status == null:
 		status = lifeStatusBase.new()
+		set_health(base_health)
+		return
 	set_health(get_health())
 
 func save_data():
@@ -95,6 +97,13 @@ func apply_health(_health: float):
 	#UserData.log(['Health: ', _health, ', status: ', status.health, ', base: ', base_health])
 	if health_bar:
 		health_bar.set_health(health)
+
+func add_age(days: int):
+	status.add_age(days)
+
+#Converter age para horas
+func get_age(type: int) -> float:
+	return float(status.age_days)
 
 func get_damage():
 	return damage

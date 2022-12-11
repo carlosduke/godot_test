@@ -4,6 +4,12 @@ var resources: Resources
 var file_save: String = 'res://saves/save.tres'
 var debug_scene: DebugConsole
 
+enum AGE_TYPES {
+	YEAR,
+	MONTH,
+	DAY,
+	HOURS
+}
 
 func _ready():
 	resources = Resources.new()
@@ -24,38 +30,77 @@ func get_resources():
 
 
 ## ------------------------------------- TIME DATA ------------------------------------ ##
+func date_cast(type: int) -> Dictionary:
+	if type == AGE_TYPES.YEAR:
+		return {
+			'year': 1.0,
+			'months': 1.0/12.0,
+			'days': 1.0/(12*30),
+			'hours': 1.0/(12.0*30.0*24.0)
+		}
+	
+	if type == AGE_TYPES.MONTH:
+		return {
+			'years': 1.0/12.0,
+			'months': 1.0,
+			'days': 1.0/(12*30),
+			'hours': 1.0/(12.0*30.0*24.0)
+		}
+	
+	if type == AGE_TYPES.DAY:
+		return {
+			'years': 1.0/(12.0*30.0),
+			'months': 1.0/(30.0),
+			'days': 1.0,
+			'hours': 1.0/(24.0)
+		}
+		
+	if type == AGE_TYPES.HOURS:
+		return {
+			'years': 1.0/(24.0*30.0*12.0),
+			'months': 1.0/(24.0*30.0),
+			'days': 1.0/24.0,
+			'hours': 1.0
+		}
+
+	return {'year': 0.0, 'monts': 0.0, 'days': 0.0, 'hours': 0.0}
+
+
 func tick(_hours: int):
-	var p_time	= resources.get('time').duplicate()
+	var to_cast = date_cast(AGE_TYPES.HOURS)
+	var p_time	= resources.get('time')
 	
-	var years	= p_time['years']
-	var months	= p_time['months']
-	var days	= p_time['days']
-	var hours	= p_time['hours']
+	var years	= int(to_cast['years'] * p_time)
+	var months	= int(to_cast['months'] * p_time)
+	var days	= int(to_cast['days'] * p_time)
+	var hours	= int(to_cast['hours'] * p_time)
 	
-	hours += _hours
-	days += int(hours/24)
-	months += int(days/30)
-	years += int(months/12)
+	var n_hours		= hours + _hours
+	var n_days		= int(to_cast['days'] * n_hours)
+	var n_months	= int(to_cast['months'] * n_hours)
+	var n_years		= int(to_cast['years'] * n_hours)
 	
-	var time = resources.get('time')
-	time['years']	= years
-	time['months']	= months%12
-	time['days']	= days%30
-	time['hours']	= hours%24
+	resources.set('time', n_hours)
 	
-	#resources.set('time', time)
-	#self.log(['Hour passed: ', time])
+	UserData.log([
+		'Year: ', n_years,
+		', Months: ', n_months,
+		', Days: ', n_days,
+		', Hours: ', _hours
+	])
+	
+	#Para futura melhorar de performance não processar items distantes do player...
 	get_tree().call_group(
 		'time',
 		'time_tick',
-		time['years']	- p_time['years'], 
-		time['months']	- p_time['months'], 
-		time['days']	- p_time['days'],
-		_hours
+		n_years - years,
+		n_months - months,
+		n_days - days,
+		n_hours - _hours
 	)
 
 func get_date():
-	var time	= resources.get('time').duplicate()
+	var time	= resources.get('time')
 	return time
 ## ------------------------------------- TIME DATA ------------------------------------ ##
 
