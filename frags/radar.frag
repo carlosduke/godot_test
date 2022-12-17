@@ -5,47 +5,46 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-const float PI = 3.14159265359;
+float box (vec2 pos, vec2 size) {
+    size -= size*.5;
+    return 
+        step(-size.x, pos.x) * step(pos.x, size.x)
+        * step(-size.y, pos.y) * step(pos.y, size.y)
+        ;
+}
 
-float ploot(vec2 pos, float line) {
-    float line_size = 0.02;
-    return smoothstep(line-line_size, line, pos.y) -
-            smoothstep(line, line + line_size, pos.y);
+float cross (vec2 pos, vec2 size){
+    vec2 v = size;
+    v.x *= .05;
+
+    vec2 h = size;
+    h.y *= .05;
+    return box(pos,v) + box(pos, h);
 }
 
 float circle(vec2 pos, float radius) {
-    return step(radius, length(pos - vec2(0.5)));
+    return length(pos) * radius;
 }
-
-float box(vec2 pos, vec2 size) {
-    vec2 shape = vec2(
-        step(size.x, pos.x),
-        step(size.y, pos.y)
-    );
-    shape *= vec2(
-        step(size.x, 1.0-pos.x),
-        step(size.y, 1.0-pos.y)
-    );
-    return shape.x * shape.y;
-}
-
-mat2 rotate(float angle) {
-    return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-}
-
 
 void main(){
-    vec2 st = gl_FragCoord.xy/u_resolution;
-
+    vec2 uv = gl_FragCoord.xy/u_resolution;
     vec3 color = vec3(0.0);
 
-    st -= vec2(0.5);
-    st = rotate(atan(sin(u_time), cos(u_time))) * st;
-    st += vec2(0.5);
+    vec2 uvq = 2.0 * fract(uv*2.)-1.0;
 
-    vec2 translate = vec2(0.0, 0.0);
-    st += translate * 0.5;
 
-    color.r += box(st, vec2(0.4975, 0.0));
+    vec2 b = vec2(.3, .3);
+
+    vec2 translate = vec2(.0);//vec2(sin(u_time), cos(u_time));
+    //translate = vec2(.0);
+    translate = translate*.5;
+
+    uvq += translate;
+    color = vec3(
+        cross(uvq, b)
+        * 1.-step(.50, length(uvq))
+        + circle(uvq, .5)
+    );
+    //color += step(.2, length(uvq));
     gl_FragColor = vec4(color, 1.0);
 }
